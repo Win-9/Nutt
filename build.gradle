@@ -19,6 +19,15 @@ repositories {
 }
 
 dependencies {
+	//Json 파싱도구
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	implementation 'org.json:json:20200518'
+
+	//jwt 플러그인
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
