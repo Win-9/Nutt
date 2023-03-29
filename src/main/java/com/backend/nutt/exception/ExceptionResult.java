@@ -1,11 +1,11 @@
-package com.backend.nutt.error;
+package com.backend.nutt.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ErrorResult {
+public class ExceptionResult {
     private int code;
     private String message;
 }
