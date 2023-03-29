@@ -1,11 +1,9 @@
 package com.backend.nutt.controller;
 
-import com.backend.nutt.domain.type.Gender;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,16 +30,7 @@ public class LoginController {
         if (!(formSignUpRequest.getPassword()).matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8}$")) {
             throw new IllegalArgumentException("NOT_MATCHES_PASSWORD");
         }
-
-        Member member = Member.builder()
-                .name(formSignUpRequest.getName())
-                .email(formSignUpRequest.getId())
-                .password(formSignUpRequest.getPassword())
-                .gender(Gender.valueOf(formSignUpRequest.getGender()))
-                .nickName(formSignUpRequest.getName())
-                .build();
-
-        memberService.save(member);
+        memberService.save(formSignUpRequest);
         return ResponseEntity.ok("ok");
     }
 
@@ -56,17 +45,7 @@ public class LoginController {
             throw new IllegalArgumentException("NOT_MATCHES_PASSWORD");
         }
 
-        Member findMember = memberService.findByEmail(loginUserRequest.getId());
-
-        if (findMember == null) {
-            throw new IllegalArgumentException("NOT_EXIST_USER");
-        }
-
-        if (!findMember.getPassword().equals(loginUserRequest.getPassword())) {
-            throw new IllegalArgumentException("PASSWORD_NOT_MATCH");
-        }
-
-
+        memberService.loginMember(loginUserRequest);
         return ResponseEntity.ok("ok");
     }
 
