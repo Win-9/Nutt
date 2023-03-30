@@ -3,6 +3,7 @@ package com.backend.nutt.controller;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
+import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.FieldNotBindingException;
 import com.backend.nutt.service.MemberService;
@@ -20,6 +21,7 @@ import java.security.Principal;
 @Controller
 @ResponseBody
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class LoginController {
 
     private final MemberService memberService;
@@ -55,10 +57,10 @@ public class LoginController {
         return ResponseEntity.ok(token);
     }
 
-
     @GetMapping("/loginInfo")
-    public void loginInfoController(@AuthenticationPrincipal Member member) {
-
+    public ResponseEntity loginInfoController(@AuthenticationPrincipal Member member) {
+        LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);
+        return ResponseEntity.ok().body(loginMemberInfo);
     }
 
 }
