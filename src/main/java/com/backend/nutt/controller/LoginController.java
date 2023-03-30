@@ -16,8 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @Controller
 @ResponseBody
 @RequiredArgsConstructor
@@ -37,7 +35,7 @@ public class LoginController {
         if (!(formSignUpRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
             throw new FieldNotBindingException("NOT_MATCHES_PASSWORD");
         }
-        memberService.save(formSignUpRequest);
+        memberService.saveMember(formSignUpRequest);
         return ResponseEntity.ok("ok");
     }
 
