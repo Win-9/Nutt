@@ -2,6 +2,7 @@ package com.backend.nutt.service;
 
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.domain.type.Gender;
+import com.backend.nutt.domain.type.Role;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.exception.UserNotFoundException;
@@ -21,8 +22,10 @@ public class MemberService {
                 .email(formSignUpRequest.getId())
                 .password(formSignUpRequest.getPassword())
                 .gender(Gender.valueOf(formSignUpRequest.getGender()))
+                .role(Role.NORMAL)
                 .nickName(formSignUpRequest.getName())
                 .build();
+
         return memberRepository.save(member);
     }
 
@@ -33,13 +36,14 @@ public class MemberService {
                 );
     }
 
-    public void loginMember(FormLoginUserRequest formLoginUserRequest) {
+    public Member loginMember(FormLoginUserRequest formLoginUserRequest) {
         Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Not_Exist_Member"));
 
         if (!(formLoginUserRequest.getPassword()).equals(findMember.getPassword())) {
             throw new UserNotFoundException("Not_Match_Password");
         }
+        return findMember;
     }
 
 }

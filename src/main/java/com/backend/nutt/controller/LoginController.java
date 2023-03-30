@@ -3,9 +3,13 @@ package com.backend.nutt.controller;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
+import com.backend.nutt.dto.response.Token;
+import com.backend.nutt.exception.FieldNotBindingException;
 import com.backend.nutt.service.MemberService;
+import com.backend.nutt.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -19,41 +23,41 @@ import java.security.Principal;
 public class LoginController {
 
     private final MemberService memberService;
+    private final TokenService tokenService;
 
-    @ExceptionHandler(IllegalArgumentException.class)
     @PostMapping("/signUp")
-    public ResponseEntity signUpController(@ModelAttribute @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
+    public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
+        System.out.println("LoginController.signUpController");
         if (result.hasErrors()) {
-            throw new IllegalArgumentException("INVALID_VALUE");
+            throw new FieldNotBindingException("INVALID_VALUE");
         }
-
-        if (!(formSignUpRequest.getPassword()).matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8}$")) {
-            throw new IllegalArgumentException("NOT_MATCHES_PASSWORD");
+        
+        if (!(formSignUpRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
+            throw new FieldNotBindingException("NOT_MATCHES_PASSWORD");
         }
         memberService.save(formSignUpRequest);
         return ResponseEntity.ok("ok");
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(FieldNotBindingException.class)
     @PostMapping("/login")
-    public ResponseEntity signUpController(@ModelAttribute FormLoginUserRequest loginUserRequest, BindingResult result) {
+    public ResponseEntity signUpController(@RequestBody FormLoginUserRequest loginUserRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new IllegalArgumentException("INVALID_VALUE");
+            throw new FieldNotBindingException("INVALID_VALUE");
         }
 
-        if (!(loginUserRequest.getPassword()).matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=\\S+$).{8}$")) {
-            throw new IllegalArgumentException("NOT_MATCHES_PASSWORD");
+        if (!(loginUserRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
+            throw new FieldNotBindingException("NOT_MATCHES_PASSWORD");
         }
 
-        memberService.loginMember(loginUserRequest);
-        return ResponseEntity.ok("ok");
+        Member member = memberService.loginMember(loginUserRequest);
+        Token token = tokenService.generateToken(member.getEmail(), member.getRole().getKey());
+        return ResponseEntity.ok(token);
     }
 
 
-
     @GetMapping("/loginInfo")
-    public void loginInfoController(Principal principal) {
-
+    public void loginInfoController(@AuthenticationPrincipal Member member) {
 
     }
 
