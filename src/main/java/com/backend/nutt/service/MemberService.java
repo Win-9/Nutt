@@ -41,7 +41,7 @@ public class MemberService {
 
     public Member loginMember(FormLoginUserRequest formLoginUserRequest) {
         Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("Not_Exist_Member"));
+                .orElseThrow(() -> new UserNotFoundException("Not_Exist_Member"));
 
         if (!(formLoginUserRequest.getPassword()).equals(findMember.getPassword())) {
             throw new UserNotFoundException("Not_Match_Password");

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceptionController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(FieldNotBindingException.class)
     public ResponseEntity illegalArgumentController(IllegalArgumentException e) {
         ExceptionResult exceptionResult = new ExceptionResult(400, e.getMessage());
         return new ResponseEntity<>(exceptionResult, HttpStatus.BAD_REQUEST);
