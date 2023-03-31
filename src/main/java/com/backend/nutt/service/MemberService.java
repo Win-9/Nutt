@@ -22,6 +22,7 @@ public class MemberService {
                 .name(formSignUpRequest.getName())
                 .email(formSignUpRequest.getId())
                 .password(formSignUpRequest.getPassword())
+                .age(formSignUpRequest.getAge())
                 .gender(Gender.valueOf(formSignUpRequest.getGender()))
                 .role(Role.NORMAL)
                 .nickName(formSignUpRequest.getName())

@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FormSignUpRequest {
     private String id;
+    private int age;
     private String password;
     private String name;
     private String gender;
