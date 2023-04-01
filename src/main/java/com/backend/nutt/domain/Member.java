@@ -45,8 +45,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Role role;
 
     private int age;
-    private int height;
-    private int weight;
+    private double height;
+    private double weight;
 
     @OneToOne(mappedBy = "member")
     private Achieve achieve;
