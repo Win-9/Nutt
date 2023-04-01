@@ -52,4 +52,25 @@ public class AchieveService {
         }
     }
 
+    private double getBmr(Member member, String gender) {
+        double bmr;
+        if (gender.equals("MALE")) {
+            bmr = (10 * member.getWeight()) + (6.25 * member.getHeight())
+                    - (5 * member.getAge()) + 5;
+        } else {
+            bmr = (10 * member.getWeight()) + (6.25 * member.getHeight())
+                    - (5 * member.getAge()) - 161;
+        }
+        return bmr;
+    }
+
+    public DailyAchieveResponse checkAchieve(Member member, AchieveCheckRequest achieveCheckRequest) {
+        Achieve achieve = member.getAchieve();
+        achieve.changeAchieveInfo(achieveCheckRequest);
+        return DailyAchieveResponse.build(
+                achieve.getAchieveKcal(),
+                achieve.getAchieveCarbohydrate(),
+                achieve.getAchieveProtein(),
+                achieve.getAchieveFat());
+    }
 }
