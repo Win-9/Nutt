@@ -11,8 +11,8 @@ public class LoginUserInfoResponse {
     private String id;
     private String name;
     private Gender gender;
-    private int height;
-    private int weight;
+    private double height;
+    private double weight;
 
     public static LoginUserInfoResponse build(Member member) {
         return new LoginUserInfoResponse(
