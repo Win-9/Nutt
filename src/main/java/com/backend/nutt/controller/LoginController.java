@@ -34,6 +34,7 @@ public class LoginController {
     private final TokenService tokenService;
 
 
+    // TODO: 회원가입 후 -> 자동 로그인으로 구성
     @Operation(description = "회원가입과 메소드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
@@ -41,7 +42,6 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "입력 오류", content =
             @Content(schema = @Schema(implementation = FieldNotBindingException.class)))
     })
-    @ExceptionHandler(FieldNotBindingException.class)
     @PostMapping("/signUp")
     public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
         System.out.println("LoginController.signUpController");
@@ -63,9 +63,8 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "입력 오류", content =
             @Content(schema = @Schema(implementation = FieldNotBindingException.class)))
     })
-    @ExceptionHandler({FieldNotBindingException.class, UserNotFoundException.class})
     @PostMapping("/login")
-    public ResponseEntity signUpController(@RequestBody FormLoginUserRequest loginUserRequest, BindingResult result) {
+    public ResponseEntity signInController(@RequestBody FormLoginUserRequest loginUserRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException("INVALID_VALUE");
         }
@@ -86,7 +85,6 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "사용자를 찾지 못하는 오류", content =
             @Content(schema = @Schema(implementation = UserNotFoundException.class)))
     })
-    @ExceptionHandler(UserNotFoundException.class)
     @GetMapping("/loginInfo")
     public ResponseEntity loginInfoController(@AuthenticationPrincipal Member member) {
         LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);

@@ -1,5 +1,6 @@
 package com.backend.nutt.dto.response;
 
+import com.backend.nutt.domain.Achieve;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,12 +12,11 @@ public class DailyAchieveResponse {
     private double dailyProtein;
     private double dailyFat;
 
-    public static DailyAchieveResponse build(double dailyKcal, double dailyCarbohydrate,
-                        double dailyProtein, double dailyFat) {
+    public static DailyAchieveResponse build(Achieve achieve) {
         return new DailyAchieveResponse(
-                dailyKcal,
-                dailyCarbohydrate,
-                dailyProtein,
-                dailyFat);
+                achieve.getAchieveKcal(),
+                achieve.getAchieveCarbohydrate(),
+                achieve.getAchieveProtein(),
+                achieve.getAchieveFat());
     }
 }

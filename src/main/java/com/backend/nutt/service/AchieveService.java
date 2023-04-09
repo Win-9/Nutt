@@ -23,20 +23,20 @@ public class AchieveService {
         double dailyTargetKcal = targetKcal(achieveSetRequest.getTarget(),
                 achieveSetRequest.getWeightGainRate(), tdee);
 
-        double carbohydrate = dailyTargetKcal * 0.45;
-        double protein = dailyTargetKcal * 0.25;
-        double fat = dailyTargetKcal * 0.30;
+        double achieveCarbohydrate = (dailyTargetKcal * 0.45) / 4;
+        double achieveProtein = (dailyTargetKcal * 0.35) / 4;
+        double achieveFat = (dailyTargetKcal * 0.20) / 9;
 
         Achieve achieve = Achieve.builder()
                 .achieveKcal(dailyTargetKcal)
-                .achieveCarbohydrate(carbohydrate)
-                .achieveFat(fat)
-                .achieveProtein(protein)
+                .achieveCarbohydrate(achieveCarbohydrate)
+                .achieveFat(achieveFat)
+                .achieveProtein(achieveProtein)
                 .build();
 
         achieveRepository.save(achieve);
 
-        return DailyAchieveResponse.build(dailyTargetKcal, carbohydrate, protein, fat);
+        return DailyAchieveResponse.build(achieve);
     }
 
     private double targetKcal(String target, double weightGainRate, double tdee) {
@@ -67,10 +67,6 @@ public class AchieveService {
     public DailyAchieveResponse checkAchieve(Member member, AchieveCheckRequest achieveCheckRequest) {
         Achieve achieve = member.getAchieve();
         achieve.changeAchieveInfo(achieveCheckRequest);
-        return DailyAchieveResponse.build(
-                achieve.getAchieveKcal(),
-                achieve.getAchieveCarbohydrate(),
-                achieve.getAchieveProtein(),
-                achieve.getAchieveFat());
+        return DailyAchieveResponse.build(achieve);
     }
 }
