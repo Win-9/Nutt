@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,7 +36,7 @@ public class LoginController {
 
 
     // TODO: 회원가입 후 -> 자동 로그인으로 구성
-    @Operation(description = "회원가입과 메소드")
+    @Operation(summary = "회원가입 메소드", description = "영어+숫자포함 8자리 이상의 비밀번호를 입력해야 한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
             @Content(schema = @Schema(name = "ok"))),
@@ -44,7 +45,6 @@ public class LoginController {
     })
     @PostMapping("/signUp")
     public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
-        System.out.println("LoginController.signUpController");
         if (result.hasErrors()) {
             throw new FieldNotBindingException("INVALID_VALUE");
         }
@@ -64,7 +64,7 @@ public class LoginController {
             @Content(schema = @Schema(implementation = FieldNotBindingException.class)))
     })
     @PostMapping("/login")
-    public ResponseEntity signInController(@RequestBody FormLoginUserRequest loginUserRequest, BindingResult result) {
+    public ResponseEntity signInController(@RequestBody @Valid FormLoginUserRequest loginUserRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException("INVALID_VALUE");
         }
@@ -78,7 +78,7 @@ public class LoginController {
         return ResponseEntity.ok(token);
     }
 
-    @Operation(description = "로그인 정보 메소드")
+    @Operation(summary = "로그인 정보 메소드", description = "인증된 사용자의 정보를 조회할 수 있다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
             @Content(schema = @Schema(implementation = LoginUserInfoResponse.class))),
