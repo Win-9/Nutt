@@ -1,5 +1,6 @@
 package com.backend.nutt.controller;
 
+import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.AchieveCheckRequest;
 import com.backend.nutt.dto.request.AchieveSetRequest;
@@ -35,7 +36,7 @@ public class AchieveController {
         }
 
         DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(achieveSetRequest, member);
-        return ResponseEntity.ok(dailyAchieveResponse);
+        return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
     }
 
     @PutMapping("/login/set/achieve/check")
@@ -50,6 +51,6 @@ public class AchieveController {
         }
 
         DailyAchieveResponse dailyAchieveResponse = achieveService.checkAchieve(member, achieveCheckRequest);
-        return ResponseEntity.ok(dailyAchieveResponse);
+        return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
     }
 }

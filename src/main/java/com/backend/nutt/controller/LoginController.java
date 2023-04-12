@@ -1,5 +1,6 @@
 package com.backend.nutt.controller;
 
+import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
@@ -53,7 +54,7 @@ public class LoginController {
             throw new FieldNotBindingException("NOT_MATCHES_PASSWORD");
         }
         memberService.saveMember(formSignUpRequest);
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok().body(BaseResponse.success());
     }
 
     @Operation(summary = "로그인 메소드", description = "로그인 후 토큰 발급")
@@ -75,7 +76,7 @@ public class LoginController {
 
         Member member = memberService.loginMember(loginUserRequest);
         Token token = tokenService.generateToken(member.getEmail(), member.getRole().getKey());
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok().body(BaseResponse.success(token));
     }
 
     @Operation(summary = "로그인 정보 메소드", description = "인증된 사용자의 정보를 조회할 수 있다.")
@@ -88,7 +89,7 @@ public class LoginController {
     @GetMapping("/loginInfo")
     public ResponseEntity loginInfoController(@AuthenticationPrincipal Member member) {
         LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);
-        return ResponseEntity.ok(loginMemberInfo);
+        return ResponseEntity.ok().body(BaseResponse.success(loginMemberInfo));
     }
 
 }
