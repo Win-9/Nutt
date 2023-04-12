@@ -11,12 +11,10 @@ import lombok.Data;
 public class AchieveSetRequest {
     @NotNull
     @Schema(description = "PAL 수치")
-    @Parameter(description = "PAL 수치")
     private double pal;
 
     @NotNull
     @Schema(description = "일주일간 목표 증감율")
-    @Parameter(description = "일주일간 목표 증감율")
     private double weightGainRate;
 
     @NotNull
