@@ -1,5 +1,6 @@
 package com.backend.nutt.exception;
 
+import com.backend.nutt.common.ResponseMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,5 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class ExceptionResult {
     private int code;
-    private String message;
+    private ResponseMessage message;
 }

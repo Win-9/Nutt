@@ -6,10 +6,12 @@ import com.backend.nutt.domain.type.Role;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
-import com.backend.nutt.exception.UserNotFoundException;
+import com.backend.nutt.exception.ErrorMessage;
+import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
+import com.backend.nutt.exception.notfound.UserException;
+import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,24 +37,22 @@ public class MemberService {
 
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(
-                        () -> new UserNotFoundException("Not_Exist_Member")
-                );
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
     }
 
     public Member loginMember(FormLoginUserRequest formLoginUserRequest) {
         Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("Not_Exist_Member"));
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
 
         if (!(formLoginUserRequest.getPassword()).equals(findMember.getPassword())) {
-            throw new UserNotFoundException("Not_Match_Password");
+            throw new PasswordNotMatchException(ErrorMessage.NOT_MATCH_PASSWORD);
         }
         return findMember;
     }
 
-    public LoginUserInfoResponse getLoginMemberInfo (Member member) {
+    public LoginUserInfoResponse getLoginMemberInfo(Member member) {
         memberRepository.findByEmail(member.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("Not_Exist_Member"));
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
         return LoginUserInfoResponse.build(member);
     }
 

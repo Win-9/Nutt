@@ -6,8 +6,9 @@ import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.dto.response.Token;
-import com.backend.nutt.exception.FieldNotBindingException;
-import com.backend.nutt.exception.UserNotFoundException;
+import com.backend.nutt.exception.badrequest.FieldNotBindingException;
+import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
+import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.service.MemberService;
 import com.backend.nutt.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +25,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static com.backend.nutt.exception.ErrorMessage.NOT_MATCH_PASSWORD;
+import static com.backend.nutt.exception.ErrorMessage.NOT_VALID_INFO;
 
 @Controller
 @ResponseBody
@@ -47,11 +51,11 @@ public class LoginController {
     @PostMapping("/signUp")
     public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new FieldNotBindingException("INVALID_VALUE");
+            throw new FieldNotBindingException(NOT_VALID_INFO);
         }
         
         if (!(formSignUpRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
-            throw new FieldNotBindingException("NOT_MATCHES_PASSWORD");
+            throw new FieldNotBindingException(NOT_VALID_INFO);
         }
         memberService.saveMember(formSignUpRequest);
         return ResponseEntity.ok().body(BaseResponse.success());
@@ -67,11 +71,11 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity signInController(@RequestBody @Valid FormLoginUserRequest loginUserRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new FieldNotBindingException("INVALID_VALUE");
+            throw new FieldNotBindingException(NOT_VALID_INFO);
         }
 
         if (!(loginUserRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
-            throw new FieldNotBindingException("NOT_MATCHES_PASSWORD");
+            throw new PasswordNotMatchException(NOT_MATCH_PASSWORD);
         }
 
         Member member = memberService.loginMember(loginUserRequest);
@@ -84,7 +88,7 @@ public class LoginController {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
             @Content(schema = @Schema(implementation = LoginUserInfoResponse.class))),
             @ApiResponse(responseCode = "400", description = "사용자를 찾지 못하는 오류", content =
-            @Content(schema = @Schema(implementation = UserNotFoundException.class)))
+            @Content(schema = @Schema(implementation = UserException.class)))
     })
     @GetMapping("/loginInfo")
     public ResponseEntity loginInfoController(@AuthenticationPrincipal Member member) {
