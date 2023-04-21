@@ -20,7 +20,7 @@ public class AchieveService {
         String gender = String.valueOf(member.getGender());
         double bmr = getBmr(member, gender);
         double tdee = bmr * achieveSetRequest.getPal();
-        double dailyTargetKcal = targetKcal(achieveSetRequest.getTarget(),
+        double dailyTargetKcal = getTargetKcal(achieveSetRequest.getTarget(),
                 achieveSetRequest.getWeightGainRate(), tdee);
 
         double achieveCarbohydrate = (dailyTargetKcal * 0.45) / 4;
@@ -39,7 +39,7 @@ public class AchieveService {
         return DailyAchieveResponse.build(achieve);
     }
 
-    private double targetKcal(String target, double weightGainRate, double tdee) {
+    private double getTargetKcal(String target, double weightGainRate, double tdee) {
         switch (target) {
             case "loss":
                 return tdee - (weightGainRate * 7700 / 7);
