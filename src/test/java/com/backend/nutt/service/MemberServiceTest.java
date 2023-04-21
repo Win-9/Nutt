@@ -6,7 +6,7 @@ import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.ExistMemberException;
-import com.backend.nutt.exception.notfound.UserException;
+import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,11 +103,11 @@ class MemberServiceTest {
                 .weight(40.5)
                 .build();
         //when
-        UserException userNotFoundException = assertThrows(UserException.class,
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> memberService.getLoginMemberInfo(member));
 
         //then
-        Assertions.assertEquals(userNotFoundException.getMessage(), "Not_Exist_Member");
+        Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_EXIST_MEMBER);
     }
 
     @Test
@@ -119,11 +119,11 @@ class MemberServiceTest {
                 "asdfzx123");
 
         //when
-        UserException userNotFoundException = assertThrows(UserException.class,
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> memberService.loginMember(request));
 
         //then
-        Assertions.assertEquals(userNotFoundException.getMessage(), "Not_Exist_Member");
+        Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_EXIST_MEMBER);
     }
 
     @Test
