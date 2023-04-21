@@ -181,7 +181,7 @@ class MemberServiceTest {
                 45.1
         );
 
-        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "abcd");
+        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "aaaaaaaa12");
 
         memberService.saveMember(firstRequest);
 
