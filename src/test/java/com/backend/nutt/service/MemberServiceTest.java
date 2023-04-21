@@ -6,6 +6,7 @@ import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.ExistMemberException;
+import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -148,5 +149,31 @@ class MemberServiceTest {
 
         //then
         Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.EXIST_MEMBER);
+    }
+
+    @Test
+    @DisplayName(value = "비밀번호 불일치 예외 테스트")
+    public void PasswordNotMatchExceptionTest() {
+        //given
+        FormSignUpRequest firstRequest = new FormSignUpRequest(
+                "test@naver.com",
+                10,
+                "abcdefg1234",
+                "Kim",
+                "MALE",
+                170.5,
+                45.1
+        );
+
+        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "abcd");
+
+        memberService.saveMember(firstRequest);
+
+        //when
+        PasswordNotMatchException exception = assertThrows(PasswordNotMatchException.class,
+                () -> memberService.loginMember(loginRequest));
+
+        //then
+        Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_MATCH_PASSWORD);
     }
 }
