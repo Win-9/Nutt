@@ -176,4 +176,35 @@ class MemberServiceTest {
         //then
         Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_MATCH_PASSWORD);
     }
+
+    @Test
+    @DisplayName("양식에 따른 비밀번호 테스트")
+    public void invalidPasswordTypeException() {
+        //given
+        String firstCase = "abc12";  //적은 글자수 ==> false
+        String secondCase = "abcdefghijkl"; //숫자를 사용하지 않은 글자 ==> false
+        String thirdCase = "123456789"; //영어를 사용하지 않은 글자  ==> false
+        String fourthCase = ""; // 빈값  ==> false
+        String fifthCase = "abcdefghijk1234567890"; // 양식에 맞는 21글자  ==> false
+        String sixthCase = "abcdef1"; // 양식에 맞는 7글자  ==> false
+        String seventhCase = "abcdefdsfg%%!"; // 특수문자  ==> false
+        String eighthCase = "abcdefg1"; // 양식에 맞는 8글자  ==> true
+        String ninthCase = "abcdefghijk123456789"; // 양식에 맞는 20글자  ==> true
+        String tenthCase = "abcsdasf4238"; // 양식에 맞는 8~20글자  ==> true
+
+
+
+        //when, then
+        Assertions.assertFalse(memberService.isPasswordValid(firstCase));
+        Assertions.assertFalse(memberService.isPasswordValid(secondCase));
+        Assertions.assertFalse(memberService.isPasswordValid(thirdCase));
+        Assertions.assertFalse(memberService.isPasswordValid(fourthCase));
+        Assertions.assertFalse(memberService.isPasswordValid(fifthCase));
+        Assertions.assertFalse(memberService.isPasswordValid(sixthCase));
+        Assertions.assertFalse(memberService.isPasswordValid(seventhCase));
+
+        Assertions.assertTrue(memberService.isPasswordValid(eighthCase));
+        Assertions.assertTrue(memberService.isPasswordValid(ninthCase));
+        Assertions.assertTrue(memberService.isPasswordValid(tenthCase));
+    }
 }
