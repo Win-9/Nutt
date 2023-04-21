@@ -4,6 +4,8 @@ import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
+import com.backend.nutt.exception.ErrorMessage;
+import com.backend.nutt.exception.badrequest.ExistMemberException;
 import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -122,5 +124,29 @@ class MemberServiceTest {
 
         //then
         Assertions.assertEquals(userNotFoundException.getMessage(), "Not_Exist_Member");
+    }
+
+    @Test
+    @DisplayName(value = "존재하는 사용자 회원가입 방지 테스트")
+    public void ExistMemberSignUpExceptionTest() {
+        //given
+        FormSignUpRequest firstRequest = new FormSignUpRequest(
+                "test@naver.com",
+                10,
+                "abcdefg1234",
+                "Kim",
+                "MALE",
+                170.5,
+                45.1
+        );
+
+        memberService.saveMember(firstRequest);
+
+        //when
+        ExistMemberException exception = assertThrows(ExistMemberException.class,
+                () -> memberService.saveMember(firstRequest));
+
+        //then
+        Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.EXIST_MEMBER);
     }
 }
