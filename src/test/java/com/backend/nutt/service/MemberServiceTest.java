@@ -7,6 +7,7 @@ import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.ExistMemberException;
 import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
+import com.backend.nutt.exception.badrequest.PasswordNotValid;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -48,6 +49,21 @@ class MemberServiceTest {
         Assertions.assertEquals(member.getHeight(), 170.5);
         Assertions.assertEquals(member.getWeight(), 40.5);
         Assertions.assertEquals(member.getEmail(), "Test@naver.com");
+    }
+
+    @Test
+    @DisplayName(value = "멤버저장 비밀번호 양식 예외 테스트")
+    public void saveMemberPasswordExceptionTest() {
+        //given
+        FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
+                "Test@naver.com", 10,
+                "abcd", "TestName",
+                "MALE", 170.5, 40.5);
+        //when
+        PasswordNotValid exception = assertThrows(PasswordNotValid.class,
+                () -> memberService.saveMember(formSignUpRequest));
+
+        Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_VALID_PASSWORD);
     }
 
     @Test
