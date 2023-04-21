@@ -44,8 +44,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private int height;
-    private int weight;
+    private int age;
+    private double height;
+    private double weight;
+
+    @OneToOne(mappedBy = "member")
+    private Achieve achieve;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
