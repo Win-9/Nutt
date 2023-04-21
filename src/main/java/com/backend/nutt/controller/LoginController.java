@@ -53,10 +53,7 @@ public class LoginController {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
-        
-        if (!(formSignUpRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
-            throw new FieldNotBindingException(NOT_VALID_INFO);
-        }
+
         memberService.saveMember(formSignUpRequest);
         return ResponseEntity.ok().body(BaseResponse.success());
     }
@@ -72,10 +69,6 @@ public class LoginController {
     public ResponseEntity signInController(@RequestBody @Valid FormLoginUserRequest loginUserRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
-        }
-
-        if (!(loginUserRequest.getPassword()).matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$")) {
-            throw new PasswordNotMatchException(NOT_MATCH_PASSWORD);
         }
 
         Member member = memberService.loginMember(loginUserRequest);

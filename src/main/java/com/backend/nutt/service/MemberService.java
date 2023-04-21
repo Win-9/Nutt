@@ -8,11 +8,15 @@ import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.ExistMemberException;
+import com.backend.nutt.exception.badrequest.FieldNotBindingException;
 import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
+import com.backend.nutt.exception.badrequest.PasswordNotValid;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.backend.nutt.exception.ErrorMessage.NOT_VALID_INFO;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +24,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(FormSignUpRequest formSignUpRequest) {
+        if (!isPasswordValid(formSignUpRequest.getPassword())) {
+            throw new PasswordNotValid(ErrorMessage.NOT_VALID_PASSWORD);
+        }
 
         if (isMember(formSignUpRequest)) {
             throw  new ExistMemberException(ErrorMessage.EXIST_MEMBER);
@@ -50,6 +57,10 @@ public class MemberService {
     }
 
     public Member loginMember(FormLoginUserRequest formLoginUserRequest) {
+        if (!isPasswordValid(formLoginUserRequest.getPassword())) {
+            throw new PasswordNotValid(ErrorMessage.NOT_VALID_PASSWORD);
+        }
+
         Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
 
@@ -63,6 +74,10 @@ public class MemberService {
         memberRepository.findByEmail(member.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
         return LoginUserInfoResponse.build(member);
+    }
+
+    public boolean isPasswordValid(String password) {
+        return password.matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$");
     }
 
 }
