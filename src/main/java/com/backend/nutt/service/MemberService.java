@@ -7,8 +7,8 @@ import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
+import com.backend.nutt.exception.badrequest.ExistMemberException;
 import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
-import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(FormSignUpRequest formSignUpRequest) {
+
+        if (isMember(formSignUpRequest)) {
+            throw  new ExistMemberException(ErrorMessage.EXIST_MEMBER);
+        }
+
         Member member = Member.builder()
                 .name(formSignUpRequest.getName())
                 .email(formSignUpRequest.getId())
@@ -33,6 +38,10 @@ public class MemberService {
                 .build();
 
         return memberRepository.save(member);
+    }
+
+    private boolean isMember(FormSignUpRequest formSignUpRequest) {
+        return memberRepository.existsMemberByEmail(formSignUpRequest.getId());
     }
 
     public Member findByEmail(String email) {
