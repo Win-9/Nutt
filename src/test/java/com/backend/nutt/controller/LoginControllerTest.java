@@ -6,9 +6,8 @@ import com.backend.nutt.domain.Member;
 import com.backend.nutt.domain.type.Role;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
-import com.backend.nutt.dto.response.Token;
-import com.backend.nutt.exception.FieldNotBindingException;
-import com.backend.nutt.exception.UserNotFoundException;
+import com.backend.nutt.exception.ErrorMessage;
+import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.service.MemberService;
 import com.backend.nutt.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,17 +23,12 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(controllers = LoginController.class,
         excludeFilters = {
@@ -112,7 +106,7 @@ class LoginControllerTest {
         );
 
         given(memberService.loginMember(any()))
-                .willThrow(new UserNotFoundException("Not_Match_Password"));
+                .willThrow(new UserException(ErrorMessage.NOT_EXIST_MEMBER, anyString()));
 
         mockMvc.perform(post("/api/login")
                         .with(csrf())
@@ -122,7 +116,7 @@ class LoginControllerTest {
                 .andDo(print())
                 .andExpect(
                         (result) -> Assertions.assertTrue(result.getResolvedException().getClass().
-                                isAssignableFrom(UserNotFoundException.class))
+                                isAssignableFrom(UserException.class))
                 )
                 .andReturn();
     }
@@ -137,7 +131,7 @@ class LoginControllerTest {
         );
 
         given(memberService.loginMember(any()))
-                .willThrow(new UserNotFoundException("Not_Match_Password"));
+                .willThrow(new UserException(ErrorMessage.NOT_VALID_INFO, any()));
 
         mockMvc.perform(post("/api/login")
                         .with(csrf())
@@ -147,7 +141,7 @@ class LoginControllerTest {
                 .andDo(print())
                 .andExpect(
                         (result) -> Assertions.assertTrue(result.getResolvedException().getClass().
-                                isAssignableFrom(UserNotFoundException.class))
+                                isAssignableFrom(UserException.class))
                 )
                 .andReturn();
     }

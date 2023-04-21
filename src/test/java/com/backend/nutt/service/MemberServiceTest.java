@@ -4,7 +4,7 @@ import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
-import com.backend.nutt.exception.UserNotFoundException;
+import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -101,7 +101,7 @@ class MemberServiceTest {
                 .weight(40.5)
                 .build();
         //when
-        UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class,
+        UserException userNotFoundException = assertThrows(UserException.class,
                 () -> memberService.getLoginMemberInfo(member));
 
         //then
@@ -117,7 +117,7 @@ class MemberServiceTest {
                 "asdfzx123");
 
         //when
-        UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class,
+        UserException userNotFoundException = assertThrows(UserException.class,
                 () -> memberService.loginMember(request));
 
         //then
