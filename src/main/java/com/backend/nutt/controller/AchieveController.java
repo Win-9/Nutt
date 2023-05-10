@@ -26,20 +26,20 @@ import org.springframework.web.bind.annotation.*;
 public class AchieveController {
     private final AchieveService achieveService;
 
-    @PostMapping("/login/set/achieve")
-    @Operation(summary = "목표 영양섭취량 제공", description = "사용자의 활동량 정보와 목표치를 입력받아 일일 목표 영양섭취량을 제공합니다.")
-    public ResponseEntity achieveSetController(@AuthenticationPrincipal Member member, @Valid AchieveSetRequest achieveSetRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new FieldNotBindingException(ErrorMessage.NOT_VALID_INFO);
-        }
-
-        if (member == null) {
-            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-        }
-
-        DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(achieveSetRequest, member);
-        return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
-    }
+//    @PostMapping("/login/set/achieve")
+//    @Operation(summary = "목표 영양섭취량 제공", description = "사용자의 활동량 정보와 목표치를 입력받아 일일 목표 영양섭취량을 제공합니다.")
+//    public ResponseEntity achieveSetController(@AuthenticationPrincipal Member member, @Valid AchieveSetRequest achieveSetRequest, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            throw new FieldNotBindingException(ErrorMessage.NOT_VALID_INFO);
+//        }
+//
+//        if (member == null) {
+//            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+//        }
+//
+//        DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(achieveSetRequest, member);
+//        return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
+//    }
 
     @PutMapping("/login/set/achieve/check")
     @Operation(summary = "목표치 확인 및 수정", description = "활동량 정보로 나온 영양성분을 보여주며, 사용자가 이를 다시 수정할 수 있게 합니다.")

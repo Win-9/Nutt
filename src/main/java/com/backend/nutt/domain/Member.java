@@ -49,6 +49,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private double weight;
 
     @OneToOne(mappedBy = "member")
+    @JoinColumn(name = "ACHIEVE_ID")
     private Achieve achieve;
 
     @Override
@@ -84,20 +85,4 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
-    //
-    // TODO: Info
-    /**
-     * 목표치: 체중감량, 체중 유지, 근육량 증가
-     * 활동량: 매우낮은 활동(기초대사량)
-     *        가벼운활동
-     *        보통
-     *        높은활동
-     *        매우높은
-     */
-
-    // TODO:
-    /**
-     * 목표치 테이블 필요
-     * PAL에따라 목표치가 달라짐 ->
-     */
 }

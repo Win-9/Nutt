@@ -1,15 +1,18 @@
 package com.backend.nutt.controller;
 
 import com.backend.nutt.common.BaseResponse;
+import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.EmailCheckRequest;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
+import com.backend.nutt.dto.response.FormSignUpResponse;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
 import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
 import com.backend.nutt.exception.notfound.UserException;
+import com.backend.nutt.service.AchieveService;
 import com.backend.nutt.service.MemberService;
 import com.backend.nutt.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +43,13 @@ public class LoginController {
 
     private final MemberService memberService;
     private final TokenService tokenService;
+    private final AchieveService achieveService;
 
 
     // TODO: 회원가입 후 -> 자동 로그인으로 구성
     // TODO: Access: 3시간, Refresh: 2주일
     // TODO: End포인트 하나로 통합
-    @Operation(summary = "회원가입 메소드", description = "영어+숫자포함 8자리 이상의 비밀번호를 입력해야 한다.")
+    @Operation(summary = "회원가입 메소드", description = "영어+숫자포함 8자리 이상의 비밀번호를 입력해야 합니다. 또한 사용자의 활동량 정보와 목표치를 입력받아 일일 목표 영양섭취량을 제공합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
             @Content(schema = @Schema(name = "ok"))),
@@ -52,18 +57,17 @@ public class LoginController {
             @Content(schema = @Schema(implementation = FieldNotBindingException.class)))
     })
     @PostMapping("/signUp")
-    public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
+    public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
 
-        memberService.saveMember(formSignUpRequest);
-        return ResponseEntity.ok().body(BaseResponse.success());
+        formSignUpRequest.setEmail((String) request.getAttribute("email"));
+        Achieve achieve = achieveService.calculateKcal(formSignUpRequest);
+        FormSignUpResponse response = memberService.saveMember(formSignUpRequest, achieve);
+        return ResponseEntity.ok().body(BaseResponse.success(response));
     }
 
-    // TODO: 회원가입 후 -> 자동 로그인으로 구성
-    // TODO: Access: 3시간, Refresh: 2주일
-    // TODO: End포인트 하나로 통합
     @Operation(summary = "이메일 체크 메소드", description = "영어+숫자포함 8자리 이상의 비밀번호를 입력해야 한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
@@ -71,13 +75,12 @@ public class LoginController {
     })
     @PostMapping("/email-check")
     public ResponseEntity emailDuplicatedCheckController(@RequestBody @Validated EmailCheckRequest request, BindingResult result
-            , RedirectAttributes attributes) {
+            , HttpServletRequest attributes) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
         memberService.checkByEmail(request.getEmail());
-
-        attributes.addAttribute("email", request.getEmail());
+        attributes.setAttribute("email", request.getEmail());
         return ResponseEntity.ok().body(BaseResponse.success());
     }
 
