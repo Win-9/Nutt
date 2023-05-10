@@ -7,10 +7,7 @@ import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
-import com.backend.nutt.exception.badrequest.ExistMemberException;
-import com.backend.nutt.exception.badrequest.FieldNotBindingException;
-import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
-import com.backend.nutt.exception.badrequest.PasswordNotValid;
+import com.backend.nutt.exception.badrequest.*;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +48,14 @@ public class MemberService {
         return memberRepository.existsMemberByEmail(formSignUpRequest.getId());
     }
 
-    public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
+    public void checkByEmail(String email) {
+        if (!email.matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")) {
+            throw new EmailNotValidException(ErrorMessage.NOT_VALID_EMAIL);
+        }
+
+        if (memberRepository.findByEmail(email).isPresent()) {
+            throw new ExistMemberException(ErrorMessage.EXIST_MEMBER);
+        }
     }
 
     public Member loginMember(FormLoginUserRequest formLoginUserRequest) {
@@ -77,7 +79,7 @@ public class MemberService {
     }
 
     public boolean isPasswordValid(String password) {
-        return password.matches("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$");
+        return password.matches("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#]).{8,20}$");
     }
 
 }
