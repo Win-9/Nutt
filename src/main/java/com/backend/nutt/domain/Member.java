@@ -48,7 +48,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private double height;
     private double weight;
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne
     @JoinColumn(name = "ACHIEVE_ID")
     private Achieve achieve;
 
