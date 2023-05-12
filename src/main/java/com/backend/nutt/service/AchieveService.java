@@ -4,6 +4,7 @@ import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.AchieveCheckRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
+import com.backend.nutt.dto.request.MemberBodyInfoRequest;
 import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.repository.AchieveRepository;
 import com.backend.nutt.repository.MemberRepository;
@@ -26,6 +27,18 @@ public class AchieveService {
         Achieve achieve = getAchieve(dailyTargetKcal);
         achieveRepository.save(achieve);
         return achieve;
+    }
+
+    public DailyAchieveResponse calculateKcal(MemberBodyInfoRequest request) {
+        String gender = String.valueOf(request.getGender());
+        double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
+        double tdee = bmr * request.getPal();
+        double dailyTargetKcal = getTargetKcal(request.getTarget(),
+                request.getWeightGainRate(), tdee);
+
+        Achieve achieve = getAchieve(dailyTargetKcal);
+        achieveRepository.save(achieve);
+        return DailyAchieveResponse.build(achieve);
     }
 
     private Achieve getAchieve(double dailyTargetKcal) {
