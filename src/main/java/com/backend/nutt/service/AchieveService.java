@@ -21,8 +21,7 @@ public class AchieveService {
         String gender = String.valueOf(request.getGender());
         double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
         double tdee = bmr * request.getPal();
-        double dailyTargetKcal = getTargetKcal(request.getTarget(),
-                request.getWeightGainRate(), tdee);
+        double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
 
         Achieve achieve = getAchieve(dailyTargetKcal);
         achieveRepository.save(achieve);
@@ -33,8 +32,7 @@ public class AchieveService {
         String gender = String.valueOf(request.getGender());
         double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
         double tdee = bmr * request.getPal();
-        double dailyTargetKcal = getTargetKcal(request.getTarget(),
-                request.getWeightGainRate(), tdee);
+        double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
 
         Achieve achieve = getAchieve(dailyTargetKcal);
         achieveRepository.save(achieve);
