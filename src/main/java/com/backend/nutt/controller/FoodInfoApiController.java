@@ -1,7 +1,8 @@
 package com.backend.nutt.controller;
 
+import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Food;
-import com.backend.nutt.repository.FoodRepository;
+import com.backend.nutt.dto.response.FoodInfoResponse;
 import com.backend.nutt.service.FoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -125,8 +126,9 @@ public class FoodInfoApiController {
     }
 
     @GetMapping("/foodInfo/{foodName}")
-    public void searchFood(@PathVariable String foodName) {
-
+    public ResponseEntity searchFood(@PathVariable String foodName) {
+        FoodInfoResponse response = foodService.getFoodInfoByName(foodName);
+        return ResponseEntity.ok().body(BaseResponse.success(response));
     }
 
 }
