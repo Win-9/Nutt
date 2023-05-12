@@ -6,7 +6,6 @@ import com.backend.nutt.domain.type.Gender;
 import com.backend.nutt.domain.type.Role;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
-import com.backend.nutt.dto.response.FormSignUpResponse;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.*;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public FormSignUpResponse saveMember(FormSignUpRequest formSignUpRequest, Achieve achieve) {
+    public Member saveMember(FormSignUpRequest formSignUpRequest, Achieve achieve) {
         if (!isPasswordValid(formSignUpRequest.getPassword())) {
             throw new PasswordNotValid(ErrorMessage.NOT_VALID_PASSWORD);
         }
@@ -43,8 +42,7 @@ public class MemberService {
                 .achieve(achieve)
                 .build();
 
-        memberRepository.save(member);
-        return FormSignUpResponse.build(member);
+        return memberRepository.save(member);
     }
 
     private boolean isMember(FormSignUpRequest formSignUpRequest) {

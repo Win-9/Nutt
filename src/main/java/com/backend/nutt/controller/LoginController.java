@@ -30,7 +30,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static com.backend.nutt.exception.ErrorMessage.NOT_VALID_INFO;
 
@@ -64,8 +63,8 @@ public class LoginController {
 
         formSignUpRequest.setEmail((String) request.getAttribute("email"));
         Achieve achieve = achieveService.calculateKcal(formSignUpRequest);
-        FormSignUpResponse response = memberService.saveMember(formSignUpRequest, achieve);
-        return ResponseEntity.ok().body(BaseResponse.success(response));
+        Member member = memberService.saveMember(formSignUpRequest, achieve);
+        return ResponseEntity.ok().body(BaseResponse.success(FormSignUpResponse.build(member)));
     }
 
     @Operation(summary = "이메일 체크 메소드", description = "영어+숫자포함 8자리 이상의 비밀번호를 입력해야 한다.")
