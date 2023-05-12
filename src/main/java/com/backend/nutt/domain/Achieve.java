@@ -19,10 +19,6 @@ public class Achieve {
     private double achieveFat;
     private double achieveProtein;
 
-    @OneToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-
     public void changeAchieveInfo(AchieveCheckRequest achieveCheckRequest) {
         this.achieveKcal = achieveCheckRequest.getDailyKcal();
         this.achieveCarbohydrate = achieveCheckRequest.getDailyCarbohydrate();

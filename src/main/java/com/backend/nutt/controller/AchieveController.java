@@ -3,11 +3,10 @@ package com.backend.nutt.controller;
 import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.AchieveCheckRequest;
-import com.backend.nutt.dto.request.AchieveSetRequest;
+import com.backend.nutt.dto.request.MemberBodyInfoRequest;
 import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
-import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.service.AchieveService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,9 +25,10 @@ import org.springframework.web.bind.annotation.*;
 public class AchieveController {
     private final AchieveService achieveService;
 
-    @PostMapping("/login/set/achieve")
+    /** 섭취량만을 계산하기 위한 API **/
+    @PostMapping("/set/achieve")
     @Operation(summary = "목표 영양섭취량 제공", description = "사용자의 활동량 정보와 목표치를 입력받아 일일 목표 영양섭취량을 제공합니다.")
-    public ResponseEntity achieveSetController(@AuthenticationPrincipal Member member, @Valid AchieveSetRequest achieveSetRequest, BindingResult bindingResult) {
+    public ResponseEntity achieveSetController(@AuthenticationPrincipal Member member, @Valid MemberBodyInfoRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new FieldNotBindingException(ErrorMessage.NOT_VALID_INFO);
         }
@@ -37,7 +37,7 @@ public class AchieveController {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(achieveSetRequest, member);
+        DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(request);
         return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
     }
 

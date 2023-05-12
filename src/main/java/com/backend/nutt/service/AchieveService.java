@@ -3,7 +3,8 @@ package com.backend.nutt.service;
 import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.AchieveCheckRequest;
-import com.backend.nutt.dto.request.AchieveSetRequest;
+import com.backend.nutt.dto.request.FormSignUpRequest;
+import com.backend.nutt.dto.request.MemberBodyInfoRequest;
 import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.repository.AchieveRepository;
 import com.backend.nutt.repository.MemberRepository;
@@ -16,12 +17,22 @@ public class AchieveService {
     private final AchieveRepository achieveRepository;
     private final MemberRepository memberRepository;
 
-    public DailyAchieveResponse calculateKcal(AchieveSetRequest achieveSetRequest, Member member) {
-        String gender = String.valueOf(member.getGender());
-        double bmr = getBmr(member, gender);
-        double tdee = bmr * achieveSetRequest.getPal();
-        double dailyTargetKcal = getTargetKcal(achieveSetRequest.getTarget(),
-                achieveSetRequest.getWeightGainRate(), tdee);
+    public Achieve calculateKcal(FormSignUpRequest request) {
+        String gender = String.valueOf(request.getGender());
+        double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
+        double tdee = bmr * request.getPal();
+        double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
+
+        Achieve achieve = getAchieve(dailyTargetKcal);
+        achieveRepository.save(achieve);
+        return achieve;
+    }
+
+    public DailyAchieveResponse calculateKcal(MemberBodyInfoRequest request) {
+        String gender = String.valueOf(request.getGender());
+        double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
+        double tdee = bmr * request.getPal();
+        double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
 
         Achieve achieve = getAchieve(dailyTargetKcal);
         achieveRepository.save(achieve);
@@ -55,14 +66,14 @@ public class AchieveService {
         }
     }
 
-    private double getBmr(Member member, String gender) {
+    private double getBmr(double weight, double height, int age, String gender) {
         double bmr;
         if (gender.equals("MALE")) {
-            bmr = (10 * member.getWeight()) + (6.25 * member.getHeight())
-                    - (5 * member.getAge()) + 5;
+            bmr = (10 * weight) + (6.25 * height)
+                    - (5 * age) + 5;
         } else {
-            bmr = (10 * member.getWeight()) + (6.25 * member.getHeight())
-                    - (5 * member.getAge()) - 161;
+            bmr = (10 * weight) + (6.25 * height)
+                    - (5 * age) - 161;
         }
         return bmr;
     }

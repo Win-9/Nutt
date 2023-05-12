@@ -5,5 +5,6 @@ public enum ErrorMessage {
     NOT_VALID_INFO,
     NOT_EXIST_MEMBER,
     EXIST_MEMBER,
-    NOT_VALID_PASSWORD
+    NOT_VALID_PASSWORD,
+    NOT_VALID_EMAIL
 }
