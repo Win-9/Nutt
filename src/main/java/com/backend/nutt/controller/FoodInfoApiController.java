@@ -2,14 +2,13 @@ package com.backend.nutt.controller;
 
 import com.backend.nutt.domain.Food;
 import com.backend.nutt.repository.FoodRepository;
+import com.backend.nutt.service.FoodService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class FoodInfoApiController {
-    private final FoodRepository foodRepository;
+    private final FoodService foodService;
     private final String BASE_URL = "https://openapi.foodsafetykorea.go.kr/api";
     private final String KEY = "e2c82b2217fa477594e2";
     private final String DATATYPE = "XML";
@@ -39,8 +38,8 @@ public class FoodInfoApiController {
             "D018116", "D018111", "D000016", "D018018", "D018180", "D000167", "P036993");
 
     @GetMapping("/searchFood")
+    @Operation(summary = "기타 음식 정보 제공", description = "10가지 음식 외의 다른 음식에 대한 정보를 찾아와서 성분을 제공합니다.")
     public String searchByFoodNameController(@RequestParam String food) throws IOException {
-        System.out.println("FoodInfoApiController.searchController");
         StringBuilder result = new StringBuilder();
 
         String fullURL = BASE_URL + "/" + KEY + "/I2790" + "/" + DATATYPE + "/" + START_IDX + "/" + END_IDX + "/DESC_KOR=" + food;
@@ -70,6 +69,7 @@ public class FoodInfoApiController {
     }
 
     @GetMapping("/saveFood")
+    @Operation(summary = "(프론트엔드 사용X)10가지의 음식정보 파싱 저장", description = "객체 탐지후 영양정보를 얻어올 음식에 대한 정보 10가지를 파싱 후 저장합니다.")
     public ResponseEntity foodSave() throws IOException {
 
         for(int i = 0; i < foodList.size() - 1; i++) {
@@ -107,7 +107,7 @@ public class FoodInfoApiController {
                     .fat(rowObj.getDouble("NUTR_CONT4"))
                     .build();
 
-            foodRepository.save(food);
+            foodService.saveFood(food);
         }
 
         // 계란 후라이
@@ -119,9 +119,14 @@ public class FoodInfoApiController {
                 .fat(6.76)
                 .build();
 
-        foodRepository.save(food);
+        foodService.saveFood(food);
 
         return ResponseEntity.ok("ok");
+    }
+
+    @GetMapping("/foodInfo/{foodName}")
+    public void searchFood(@PathVariable String foodName) {
+
     }
 
 }
