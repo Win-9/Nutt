@@ -5,6 +5,10 @@ import com.backend.nutt.domain.Food;
 import com.backend.nutt.dto.response.FoodInfoResponse;
 import com.backend.nutt.service.FoodService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.XML;
@@ -125,6 +129,11 @@ public class FoodInfoApiController {
         return ResponseEntity.ok("ok");
     }
 
+    @Operation(summary = "음식 정보 표시", description = "미리 저장된 10가지의 음식을 검색하면 그에대한 정보를 얻을 수 있습니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공", content =
+            @Content(schema = @Schema(implementation = FoodInfoResponse.class))),
+    })
     @GetMapping("/foodInfo/{foodName}")
     public ResponseEntity searchFood(@PathVariable String foodName) {
         FoodInfoResponse response = foodService.getFoodInfoByName(foodName);
