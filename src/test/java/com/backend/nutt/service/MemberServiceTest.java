@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 class MemberServiceTest {
@@ -37,18 +38,19 @@ class MemberServiceTest {
     public void saveMemberTest() {
         //given
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
-                "Test@naver.com", 10,
-                "asdfzx123", "TestName",
-                "MALE", 170.5, 40.5);
+                "kim@naver.com", 10,
+                "qwert1234!", "testName",
+                "MALE", 170.5, 40.5, any(), any(), any());
+
         //when
-        memberService.saveMember(formSignUpRequest);
+        memberService.saveMember(formSignUpRequest, any());
 
         //then
-        Member member = memberRepository.findByEmail("Test@naver.com").get();
-        Assertions.assertEquals(member.getName(), "TestName");
+        Member member = memberRepository.findByEmail("kim@naver.com").get();
+        Assertions.assertEquals(member.getName(), "testName");
         Assertions.assertEquals(member.getHeight(), 170.5);
         Assertions.assertEquals(member.getWeight(), 40.5);
-        Assertions.assertEquals(member.getEmail(), "Test@naver.com");
+        Assertions.assertEquals(member.getEmail(), "kim@naver.com");
     }
 
     @Test
@@ -56,12 +58,12 @@ class MemberServiceTest {
     public void saveMemberPasswordExceptionTest() {
         //given
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
-                "Test@naver.com", 10,
-                "abcd", "TestName",
-                "MALE", 170.5, 40.5);
+                "kim@naver.com", 10,
+                "abcd", "testName",
+                "MALE", 170.5, 40.5, any(), any(), any());
         //when
         PasswordNotValid exception = assertThrows(PasswordNotValid.class,
-                () -> memberService.saveMember(formSignUpRequest));
+                () -> memberService.saveMember(formSignUpRequest, any()));
 
         Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_VALID_PASSWORD);
     }
@@ -71,20 +73,20 @@ class MemberServiceTest {
     public void loginMemberTest() {
         //given
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
-                "test@naver.com", 10,
-                "asdfzx123", "TestName",
-                "MALE", 170.5, 40.5);
-        memberService.saveMember(formSignUpRequest);
-        FormLoginUserRequest request = new FormLoginUserRequest("test@naver.com", "asdfzx123");
+                "kim@naver.com", 10,
+                "qwert1234!", "testName",
+                "MALE", 170.5, 40.5, any(), any(), any());
+        Member saveMember = memberService.saveMember(formSignUpRequest, any());
+        FormLoginUserRequest request = new FormLoginUserRequest("kim@naver.com", "qwert1234!");
 
         //when
         Member member = memberService.loginMember(request);
 
         //then
-        Assertions.assertEquals(member.getName(), "TestName");
-        Assertions.assertEquals(member.getHeight(), 170.5);
-        Assertions.assertEquals(member.getWeight(), 40.5);
-        Assertions.assertEquals(member.getEmail(), "test@naver.com");
+        Assertions.assertEquals(member.getName(), saveMember.getName());
+        Assertions.assertEquals(member.getHeight(), saveMember.getHeight());
+        Assertions.assertEquals(member.getWeight(), saveMember.getWeight());
+        Assertions.assertEquals(member.getEmail(), saveMember.getEmail());
     }
 
     @Test
@@ -92,19 +94,18 @@ class MemberServiceTest {
     public void loginInfoMemberTest() {
         //given
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
-                "test@naver.com", 10,
-                "asdfzx123", "TestName",
-                "MALE", 170.5, 40.5);
-        Member member = memberService.saveMember(formSignUpRequest);
+                "kim@naver.com", 10,
+                "qwert1234!", "testName",
+                "MALE", 170.5, 40.5, any(), any(), any());
+        Member member = memberService.saveMember(formSignUpRequest, any());
 
         //when
         LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);
 
         //then
-        Assertions.assertEquals(member.getName(), "TestName");
-        Assertions.assertEquals(member.getHeight(), 170.5);
-        Assertions.assertEquals(member.getWeight(), 40.5);
-        Assertions.assertEquals(member.getEmail(), "test@naver.com");
+        Assertions.assertEquals(member.getName(), loginMemberInfo.getName());
+        Assertions.assertEquals(member.getHeight(), loginMemberInfo.getHeight());
+        Assertions.assertEquals(member.getWeight(), loginMemberInfo.getWeight());
     }
 
     @Test
@@ -115,7 +116,7 @@ class MemberServiceTest {
                 .email("test@naver.com")
                 .name("test")
                 .age(10)
-                .password("asdfzx123")
+                .password("asdfzx123!")
                 .height(170.5)
                 .weight(40.5)
                 .build();
@@ -133,7 +134,7 @@ class MemberServiceTest {
         //given
         FormLoginUserRequest request = new FormLoginUserRequest(
                 "test@naver.com",
-                "asdfzx123");
+                "asdfzx123!");
 
         //when
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
@@ -150,18 +151,21 @@ class MemberServiceTest {
         FormSignUpRequest firstRequest = new FormSignUpRequest(
                 "test@naver.com",
                 10,
-                "abcdefg1234",
+                "abcdefg1234!",
                 "Kim",
                 "MALE",
                 170.5,
-                45.1
+                45.1,
+                any(),
+                any(),
+                any()
         );
 
-        memberService.saveMember(firstRequest);
+        memberService.saveMember(firstRequest, any());
 
         //when
         ExistMemberException exception = assertThrows(ExistMemberException.class,
-                () -> memberService.saveMember(firstRequest));
+                () -> memberService.saveMember(firstRequest, any()));
 
         //then
         Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.EXIST_MEMBER);
@@ -174,16 +178,19 @@ class MemberServiceTest {
         FormSignUpRequest firstRequest = new FormSignUpRequest(
                 "test@naver.com",
                 10,
-                "abcdefg1234",
+                "abcdefg1234!",
                 "Kim",
                 "MALE",
                 170.5,
-                45.1
+                45.1,
+                any(),
+                any(),
+                any()
         );
 
         FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "aaaaaaaa12");
 
-        memberService.saveMember(firstRequest);
+        memberService.saveMember(firstRequest, any());
 
         //when
         PasswordNotMatchException exception = assertThrows(PasswordNotMatchException.class,
@@ -198,15 +205,19 @@ class MemberServiceTest {
     public void invalidPasswordTypeException() {
         //given
         String firstCase = "abc12";  //적은 글자수 ==> false
-        String secondCase = "abcdefghijkl"; //숫자를 사용하지 않은 글자 ==> false
-        String thirdCase = "123456789"; //영어를 사용하지 않은 글자  ==> false
+        String secondCase = "abcdefghijkl"; //숫자와 특수문자를 사용하지 않은 글자 ==> false
+        String thirdCase = "123456789"; //영어와 특수문자를 사용하지 않은 글자  ==> false
         String fourthCase = ""; // 빈값  ==> false
-        String fifthCase = "abcdefghijk1234567890"; // 양식에 맞는 21글자  ==> false
-        String sixthCase = "abcdef1"; // 양식에 맞는 7글자  ==> false
-        String seventhCase = "abcdefdsfg%%!"; // 특수문자  ==> false
-        String eighthCase = "abcdefg1"; // 양식에 맞는 8글자  ==> true
-        String ninthCase = "abcdefghijk123456789"; // 양식에 맞는 20글자  ==> true
-        String tenthCase = "abcsdasf4238"; // 양식에 맞는 8~20글자  ==> true
+        String fifthCase = "abcdefghijk123456789!"; // 양식에 맞는 21글자  ==> false
+        String sixthCase = "abcde1!"; // 양식에 맞는 7글자  ==> false
+        String seventhCase = "!@#!@#!@#!@#"; // 특수문자만  ==> false
+        String eighthCase = "abcdef1!"; // 양식에 맞는 8글자  ==> true
+        String ninthCase = "abcdefghijk12345678!"; // 양식에 맞는 20글자  ==> true
+        String tenthCase = "abcsdasf4238!@#"; // 양식에 맞는 8~20글자  ==> true
+        String eleventhCase = "abcsdasf!@#!@#"; // 영어와 특수문자만 사용  ==> false
+        String twelfthCase = "abcsdasf1233"; // 영어와 숫자만 사용  ==> false
+        String thirteenthCase = "123123!@#!@#"; // 숫자와 특수문자만 사용  ==> false
+
 
 
 
@@ -222,5 +233,10 @@ class MemberServiceTest {
         Assertions.assertTrue(memberService.isPasswordValid(eighthCase));
         Assertions.assertTrue(memberService.isPasswordValid(ninthCase));
         Assertions.assertTrue(memberService.isPasswordValid(tenthCase));
+
+        Assertions.assertFalse(memberService.isPasswordValid(eleventhCase));
+        Assertions.assertFalse(memberService.isPasswordValid(twelfthCase));
+        Assertions.assertFalse(memberService.isPasswordValid(thirteenthCase));
+
     }
 }

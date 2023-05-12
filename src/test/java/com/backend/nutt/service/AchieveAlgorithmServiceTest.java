@@ -42,10 +42,10 @@ class AchieveAlgorithmServiceTest {
         Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
         Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
         Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
-//        System.out.println("response = " + response.getDailyKcal());
-//        System.out.println("fat = " + response.getDailyFat());
-//        System.out.println("protein = " + response.getDailyProtein());
-//        System.out.println("carbohydrate = " + response.getDailyCarbohydrate());
+//        System.out.println("response = " + response.getAchieveKcal());
+//        System.out.println("fat = " + response.getAchieveFat());
+//        System.out.println("protein = " + response.getAchieveProtein());
+//        System.out.println("carbohydrate = " + response.getAchieveCarbohydrate());
     }
 
     @Test
@@ -119,7 +119,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientFemaleMaintenanceTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "maintenance", 0.5 / 7);
-        FormSignUpRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "increase");
+        FormSignUpRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "maintenance");
         Member member = getMember(Gender.FEMALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -177,6 +177,7 @@ class AchieveAlgorithmServiceTest {
                 .gender(gender)
                 .weight(70)
                 .height(170.5)
+                .age(20)
                 .password("abcdeftgas12")
                 .build();
     }
