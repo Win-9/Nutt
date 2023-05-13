@@ -43,6 +43,7 @@ public class LoginController {
     private final MemberService memberService;
     private final TokenService tokenService;
     private final AchieveService achieveService;
+    private String email = null;
 
 
     // TODO: 회원가입 후 -> 자동 로그인으로 구성
@@ -56,12 +57,13 @@ public class LoginController {
             @Content(schema = @Schema(implementation = FieldNotBindingException.class)))
     })
     @PostMapping("/signUp")
-    public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result, HttpServletRequest request) {
+    public ResponseEntity signUpController(@RequestBody @Validated FormSignUpRequest formSignUpRequest, BindingResult result) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
 
-        formSignUpRequest.setEmail((String) request.getAttribute("email"));
+        formSignUpRequest.setEmail(email);
+        System.out.println("formSignUpRequest = " + formSignUpRequest.getEmail());
         Achieve achieve = achieveService.calculateKcal(formSignUpRequest);
         Member member = memberService.saveMember(formSignUpRequest, achieve);
         return ResponseEntity.ok().body(BaseResponse.success(FormSignUpResponse.build(member)));
@@ -73,14 +75,13 @@ public class LoginController {
             @Content(schema = @Schema(name = "ok"))),
     })
     @PostMapping("/email-check")
-    public ResponseEntity emailDuplicatedCheckController(@RequestBody @Validated EmailCheckRequest request, BindingResult result
-            , HttpServletRequest attributes) {
+    public ResponseEntity emailDuplicatedCheckController(@RequestBody @Validated EmailCheckRequest request, BindingResult result) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
         memberService.checkByEmail(request.getEmail());
-        attributes.setAttribute("email", request.getEmail());
-        return ResponseEntity.ok().body(BaseResponse.success());
+        email = request.getEmail();
+        return ResponseEntity.ok().body(BaseResponse.success(request.getEmail()));
     }
 
     @Operation(summary = "로그인 메소드", description = "로그인 후 토큰 발급")

@@ -1,9 +1,15 @@
 package com.backend.nutt.controller;
 
+import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Food;
-import com.backend.nutt.repository.FoodRepository;
+import com.backend.nutt.dto.response.FoodInfoResponse;
 import com.backend.nutt.service.FoodService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.json.XML;
@@ -17,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+@Tag(name = "음식정보", description = "음식과 관련한 모든 처리를 하는 API들의 모음")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -124,9 +131,15 @@ public class FoodInfoApiController {
         return ResponseEntity.ok("ok");
     }
 
+    @Operation(summary = "음식 정보 표시", description = "미리 저장된 10가지의 음식을 검색하면 그에대한 정보를 얻을 수 있습니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공", content =
+            @Content(schema = @Schema(implementation = FoodInfoResponse.class))),
+    })
     @GetMapping("/foodInfo/{foodName}")
-    public void searchFood(@PathVariable String foodName) {
-
+    public ResponseEntity searchFood(@PathVariable String foodName) {
+        FoodInfoResponse response = foodService.getFoodInfoByName(foodName);
+        return ResponseEntity.ok().body(BaseResponse.success(response));
     }
 
 }
