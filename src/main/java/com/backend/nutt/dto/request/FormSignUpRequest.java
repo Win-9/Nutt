@@ -6,12 +6,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter
 @AllArgsConstructor
 @Setter
 public class FormSignUpRequest {
 
+    @Nullable
     @Schema(description = "이메일", example = "abc@gmail.com")
     private String email;
 
