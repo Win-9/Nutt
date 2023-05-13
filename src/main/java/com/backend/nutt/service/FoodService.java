@@ -18,7 +18,7 @@ public class FoodService {
     }
 
     public FoodInfoResponse getFoodInfoByName(String foodName) {
-        Food food = foodRepository.findByFoodName(foodName)
+        Food food = foodRepository.findByName(foodName)
                 .orElseThrow(() -> new FoodNotFoundException(ErrorMessage.NOT_EXIST_FOOD));
         return FoodInfoResponse.build(food);
     }
