@@ -1,6 +1,7 @@
 package com.backend.nutt.common;
 
 
+import com.backend.nutt.exception.unavailable.TokenExpiredException;
 import com.backend.nutt.service.TokenService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +23,13 @@ public class TokenFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String accessToken = httpServletRequest.getHeader("Access-Token");
 
-        if (accessToken != null && tokenService.checkToken(accessToken)) {
-            Authentication authentication = tokenService.getAuthentication(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (accessToken != null && tokenService.checkToken(accessToken)) {
+                Authentication authentication = tokenService.getAuthentication(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (TokenExpiredException e) {
+            throw new RuntimeException(e);
         }
         chain.doFilter(request, response);
     }
