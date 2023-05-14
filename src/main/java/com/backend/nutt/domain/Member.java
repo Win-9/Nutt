@@ -12,8 +12,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -51,6 +53,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @OneToOne
     @JoinColumn(name = "ACHIEVE_ID")
     private Achieve achieve;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @JoinColumn(name = "DAILY_INTAKE_ID")
+    private List<DailyIntake> dailyIntakeList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
