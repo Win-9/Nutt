@@ -6,7 +6,7 @@ import com.backend.nutt.dto.request.IntakeFormRequest;
 import com.backend.nutt.dto.response.IntakeYearResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
-import com.backend.nutt.repository.DailyIntakeRepository;
+import com.backend.nutt.repository.IntakeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class DailyIntakeService {
-    private final DailyIntakeRepository dailyIntakeRepository;
+    private final IntakeRepository intakeRepository;
 
     @Transactional
     public void saveDailyIntake(Member member, IntakeFormRequest request) {
@@ -39,7 +39,7 @@ public class DailyIntakeService {
                 .build();
 
 
-        dailyIntakeRepository.save(intake);
+        intakeRepository.save(intake);
         intake.setMember(member);
     }
 
@@ -48,7 +48,7 @@ public class DailyIntakeService {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        return dailyIntakeRepository.findByIntakeDateYearOrderByIntakeDateAsc(year)
+        return intakeRepository.findByIntakeDateYearOrderByIntakeDateAsc(year)
                 .stream()
                 .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
                 .map(m -> IntakeYearResponse.build(m))
@@ -60,7 +60,7 @@ public class DailyIntakeService {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        return dailyIntakeRepository.findByIntakeDateMonthOrderByIntakeDateAsc(month)
+        return intakeRepository.findByIntakeDateMonthOrderByIntakeDateAsc(month)
                 .stream()
                 .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
                 .map(m -> IntakeYearResponse.build(m))
@@ -72,7 +72,7 @@ public class DailyIntakeService {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        return dailyIntakeRepository.findByIntakeDateDayOrderByIntakeDateAsc(day)
+        return intakeRepository.findByIntakeDateDayOrderByIntakeDateAsc(day)
                 .stream()
                 .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
                 .map(m -> IntakeYearResponse.build(m))
