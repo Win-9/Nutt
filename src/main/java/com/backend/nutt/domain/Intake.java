@@ -15,15 +15,15 @@ import java.time.LocalTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DailyIntake {
+public class Intake {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double dailyKcal;
-    private double dailyCarbohydrate;
-    private double dailyFat;
-    private double dailyProtein;
+    private double intakeKcal;
+    private double intakeCarbohydrate;
+    private double intakeFat;
+    private double intakeProtein;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate intakeDate;
@@ -44,10 +44,10 @@ public class DailyIntake {
 
     public void setMember(Member member) {
         if (this.member != null) {
-            this.member.getDailyIntakeList().remove(this);
+            this.member.getIntakeList().remove(this);
         }
 
         this.member = member;
-        member.getDailyIntakeList().add(this);
+        member.getIntakeList().add(this);
     }
 }

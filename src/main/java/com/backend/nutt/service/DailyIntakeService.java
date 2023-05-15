@@ -1,6 +1,6 @@
 package com.backend.nutt.service;
 
-import com.backend.nutt.domain.DailyIntake;
+import com.backend.nutt.domain.Intake;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.IntakeFormRequest;
 import com.backend.nutt.exception.ErrorMessage;
@@ -26,17 +26,23 @@ public class DailyIntakeService {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        DailyIntake dailyIntake = DailyIntake.builder()
-                .dailyKcal(request.getIntakeKcal())
-                .dailyCarbohydrate(request.getIntakeCarbohydrate())
-                .dailyProtein(request.getIntakeProtein())
-                .dailyFat(request.getIntakeFat())
+        Intake intake = Intake.builder()
+                .intakeKcal(request.getIntakeKcal())
+                .intakeCarbohydrate(request.getIntakeCarbohydrate())
+                .intakeProtein(request.getIntakeProtein())
+                .intakeFat(request.getIntakeFat())
                 .intakeDate(LocalDate.now())            // 업로드시의 날짜
                 .intakeTime(LocalTime.now())            // 업로드시의 시간
                 .build();
 
 
-        dailyIntakeRepository.save(dailyIntake);
-        dailyIntake.setMember(member);
+        dailyIntakeRepository.save(intake);
+        intake.setMember(member);
     }
+
+//    public void getDailyIntakeYear(int year) {
+//        dailyIntakeRepository.findByIntakeDateYearOrderByIntakeDateAsc(year)
+//                .stream()
+//                .map()
+//    }
 }
