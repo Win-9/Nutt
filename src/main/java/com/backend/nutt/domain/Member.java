@@ -55,7 +55,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Achieve achieve;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    @JoinColumn(name = "DAILY_INTAKE_ID")
     private List<DailyIntake> dailyIntakeList = new ArrayList<>();
 
     @Override

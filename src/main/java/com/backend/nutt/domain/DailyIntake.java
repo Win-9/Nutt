@@ -2,6 +2,7 @@ package com.backend.nutt.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,10 +20,13 @@ public class DailyIntake {
     private double dailyFat;
     private double dailyProtein;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate intakeDate;
+    @DateTimeFormat(pattern = "hh:mm")
     private LocalTime intakeTime;
 
     @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     private String imageUrl;
