@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +32,12 @@ public class DailyIntakeController {
         dailyIntakeService.saveDailyIntake(member, intakeFormRequest);
         return ResponseEntity.ok().body(BaseResponse.success());
     }
+
+//    @GetMapping("/")
+//    @Operation(summary = "년도별 섭취기록", description = "년도를 검색하여 섭취한 기록들을 확인합니다.")
+//    public ResponseEntity getIntakeRecordYear() {
+//
+//    }
+
 
 }
