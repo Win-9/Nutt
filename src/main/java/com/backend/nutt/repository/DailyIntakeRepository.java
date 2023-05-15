@@ -1,7 +1,13 @@
 package com.backend.nutt.repository;
 
-import com.backend.nutt.domain.DailyIntake;
+import com.backend.nutt.domain.Intake;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DailyIntakeRepository extends JpaRepository<DailyIntake, Long> {
+import java.util.List;
+import java.util.Optional;
+
+public interface DailyIntakeRepository extends JpaRepository<Intake, Long> {
+    List<Intake> findByIntakeDateYearOrderByIntakeDateAsc(int year);
+    List<Intake> findByIntakeDateMonthOrderByIntakeDateAsc(int month);
+    List<Intake> findByIntakeDateDayOrderByIntakeDateAsc(int day);
 }
