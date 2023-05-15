@@ -57,6 +57,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<DailyIntake> dailyIntakeList = new ArrayList<>();
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(getRole().toString())
