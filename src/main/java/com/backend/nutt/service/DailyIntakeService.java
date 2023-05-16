@@ -55,27 +55,16 @@ public class DailyIntakeService {
                 .collect(Collectors.toList());
     }
 
-    public List<IntakeYearResponse> getDailyIntakeMonth(Member member, int month) {
+    public List<IntakeYearResponse> getDailyIntakeDate(Member member, int year, int month) {
         if (member == null) {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        return intakeRepository.findByIntakeDateMonthOrderByIntakeDateAsc(month)
+        return intakeRepository.findByIntakeDateYearMonthOrderByIntakeDateAsc(year, month)
                 .stream()
                 .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
                 .map(m -> IntakeYearResponse.build(m))
                 .collect(Collectors.toList());
     }
 
-    public List<IntakeYearResponse> getDailyIntakeDay(Member member, int day) {
-        if (member == null) {
-            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-        }
-
-        return intakeRepository.findByIntakeDateDayOrderByIntakeDateAsc(day)
-                .stream()
-                .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
-                .map(m -> IntakeYearResponse.build(m))
-                .collect(Collectors.toList());
-    }
 }
