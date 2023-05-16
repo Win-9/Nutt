@@ -27,10 +27,11 @@ public class Intake {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate intakeDate;
+
     @DateTimeFormat(pattern = "hh:mm")
     private LocalTime intakeTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
