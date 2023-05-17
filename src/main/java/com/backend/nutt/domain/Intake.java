@@ -35,13 +35,9 @@ public class Intake {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    private String imageUrl;
-    private String imageName;
-
-    public void setImage(String imageUrl, String imageName) {
-        this.imageUrl = imageUrl;
-        this.imageName = imageName;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEALPLAN_ID")
+    private MealPlan mealPlan;
 
     public void setMember(Member member) {
         if (this.member != null) {
@@ -49,6 +45,15 @@ public class Intake {
         }
 
         this.member = member;
+        member.getIntakeList().add(this);
+    }
+
+    public void setMealPlan(MealPlan mealPlan) {
+        if (this.mealPlan != null) {
+            this.mealPlan.getIntakeList().remove(this);
+        }
+
+        this.mealPlan = mealPlan;
         member.getIntakeList().add(this);
     }
 }
