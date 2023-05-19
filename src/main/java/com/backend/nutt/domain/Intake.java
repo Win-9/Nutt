@@ -20,6 +20,7 @@ public class Intake {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String intakeFoodName;
     private double intakeKcal;
     private double intakeCarbohydrate;
     private double intakeFat;
@@ -32,21 +33,9 @@ public class Intake {
     private LocalTime intakeTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALPLAN_ID")
     private MealPlan mealPlan;
 
-    public void setMember(Member member) {
-        if (this.member != null) {
-            this.member.getIntakeList().remove(this);
-        }
-
-        this.member = member;
-        member.getIntakeList().add(this);
-    }
 
     public void setMealPlan(MealPlan mealPlan) {
         if (this.mealPlan != null) {
@@ -54,6 +43,6 @@ public class Intake {
         }
 
         this.mealPlan = mealPlan;
-        member.getIntakeList().add(this);
+        mealPlan.getIntakeList().add(this);
     }
 }

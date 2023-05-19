@@ -55,9 +55,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Achieve achieve;
 
     @OneToMany(mappedBy = "member")
-    private List<Intake> intakeList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
     private List<MealPlan> mealPlanList = new ArrayList<>();
 
     @Override
