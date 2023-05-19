@@ -42,8 +42,7 @@ public class MealPlanController {
     @GetMapping("/search/date/{year}/{month}")
     @Operation(summary = "년도, 월 별 섭취기록", description = "년도와 달을 검색하여 섭취한 기록들을 확인합니다.")
     public ResponseEntity getIntakeRecordMonth(@AuthenticationPrincipal Member member, @PathVariable int year, @PathVariable int month) {
-        String yearMonth = year + "-" + month;
-        YearMonthMealPlanResponse response = mealPlanService.getMealPlanYearMonth(member, yearMonth);
+        YearMonthMealPlanResponse response = mealPlanService.getMealPlanYearMonth(member, year, month);
         return ResponseEntity.ok().body(BaseResponse.success(response));
     }
 

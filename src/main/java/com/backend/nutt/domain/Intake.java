@@ -33,7 +33,7 @@ public class Intake {
     private LocalTime intakeTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEALPLAN_ID")
+    @JoinColumn(name = "MEAL_PLAN_ID")
     private MealPlan mealPlan;
 
 

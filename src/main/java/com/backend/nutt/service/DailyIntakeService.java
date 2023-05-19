@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -44,20 +43,27 @@ public class DailyIntakeService {
         intakeRepository.save(intake);
 
         // 식단 세팅후 저장
-        MealPlan findMealPlan = mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(), LocalDate.now().getYear(),
-                LocalDate.now().getMonthValue());
+        MealPlan findMealPlan = mealPlanRepository.findByMemberIdAndIntakeDateAndIntakeTitle(member.getId(), LocalDate.now().getYear(),
+                LocalDate.now().getMonthValue(), IntakeTitle.valueOf(request.getIntakeTitle()));
 
         if (findMealPlan == null) {
-            MealPlan mealPlan = new MealPlan();
+            MealPlan mealPlan = MealPlan.builder()
+                    .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
+                    .intakeDate(LocalDate.now())
+                    .intakeTime(LocalTime.now())
+                    .intakeList(new ArrayList<>())
+                    .build();
             mealPlan.setIntakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()));
             mealPlan.setMember(member);
+            mealPlanRepository.save(mealPlan);
 
             intake.setMealPlan(mealPlan);
+
         } else {
             intake.setMealPlan(findMealPlan);
+            mealPlanRepository.save(findMealPlan);
         }
 
-        mealPlanRepository.save(findMealPlan);
     }
 
 }

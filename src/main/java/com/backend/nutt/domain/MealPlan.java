@@ -65,4 +65,5 @@ public class MealPlan extends BaseTimeEntity {
     public void setIntakeTitle(IntakeTitle intakeTitle) {
         this.intakeTitle = intakeTitle;
     }
+
 }
