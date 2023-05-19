@@ -1,12 +1,15 @@
 package com.backend.nutt.service;
 
 import com.backend.nutt.domain.Intake;
+import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.Member;
+import com.backend.nutt.domain.type.IntakeTitle;
 import com.backend.nutt.dto.request.IntakeFormRequest;
 import com.backend.nutt.dto.response.IntakeYearResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.IntakeRepository;
+import com.backend.nutt.repository.MealPlanRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DailyIntakeService {
     private final IntakeRepository intakeRepository;
+    private final MealPlanRepository mealPlanRepository;
 
     @Transactional
     public void saveDailyIntake(Member member, IntakeFormRequest request) {
@@ -37,34 +41,23 @@ public class DailyIntakeService {
                 .intakeDate(LocalDate.now())            // 업로드시의 날짜
                 .intakeTime(LocalTime.now())            // 업로드시의 시간
                 .build();
-
-
         intakeRepository.save(intake);
-        intake.setMember(member);
-    }
 
-    public List<IntakeYearResponse> getDailyIntakeYear(Member member, int year) {
-        if (member == null) {
-            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+        // 식단 세팅후 저장
+        MealPlan findMealPlan = mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(), LocalDate.now().getYear(),
+                LocalDate.now().getMonthValue());
+
+        if (findMealPlan == null) {
+            MealPlan mealPlan = new MealPlan();
+            mealPlan.setIntakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()));
+            mealPlan.setMember(member);
+
+            intake.setMealPlan(mealPlan);
+        } else {
+            intake.setMealPlan(findMealPlan);
         }
 
-        return intakeRepository.findByIntakeDateYearOrderByIntakeDateAsc(year)
-                .stream()
-                .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
-                .map(m -> IntakeYearResponse.build(m))
-                .collect(Collectors.toList());
-    }
-
-    public List<IntakeYearResponse> getDailyIntakeDate(Member member, int year, int month) {
-        if (member == null) {
-            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-        }
-
-        return intakeRepository.findByIntakeDateYearMonthOrderByIntakeDateAsc(year, month)
-                .stream()
-                .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
-                .map(m -> IntakeYearResponse.build(m))
-                .collect(Collectors.toList());
+        mealPlanRepository.save(findMealPlan);
     }
 
 }

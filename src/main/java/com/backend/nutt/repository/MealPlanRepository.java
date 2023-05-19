@@ -9,9 +9,19 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MealPlanRepository extends JpaRepository<MealPlan, Long> {
+
+    @Query("SELECT m FROM MealPlan m " +
+            "WHERE m.member.id = :id " +
+            "AND YEAR(m.intakeDate) = :year " +
+            "AND MONTH(m.intakeDate) = :month" +
+            "AND")
+    MealPlan findByMemberIdAndIntakeDate(@Param("id") long id, @Param("year") int year, @Param("month") int month);
     @Query("SELECT m FROM MealPlan m WHERE YEAR(m.intakeDate) = :year ORDER BY m.intakeDate ASC")
-    List<Intake> findByIntakeDateYearOrderByIntakeDateAsc(@Param("year") int year);
+    List<MealPlan> findByIntakeDateYearOrderByIntakeDateAsc(@Param("year") int year);
 
     @Query("SELECT m FROM MealPlan m WHERE YEAR(m.intakeDate) = :year AND MONTH(m.intakeDate) = :month ORDER BY m.intakeDate ASC")
-    List<Intake> findByIntakeDateYearMonthOrderByIntakeDateAsc(@Param("year") int year, @Param("month") int month);
+    List<MealPlan> findByIntakeDateYearMonthOrderByIntakeDateAsc(@Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT m FROM MealPlan m WHERE FUNCTION('CONCAT', YEAR(m.intakeDate), '-', MONTH(m.intakeDate)) = :yearMonth")
+    List<MealPlan> findByIntakeDateYearMonthAndTitleOrderByIntakeDate(@Param("yearMonth") String yearMonth);
 }

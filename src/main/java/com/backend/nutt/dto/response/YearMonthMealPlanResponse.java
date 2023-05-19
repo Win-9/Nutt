@@ -87,9 +87,14 @@ public class YearMonthMealPlanResponse {
             mealDataList.add(mealData);
         }
 
+        if (mealPlans.size() == 0) {
+            response.setMealData(null);
+            response.setDate(null);
+            return response;
+        }
+
         response.setMealData(mealDataList);
         response.setDate(mealPlans.get(0).getIntakeDate());
-
         return response;
     }
 
