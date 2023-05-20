@@ -22,10 +22,6 @@ public class MealPlanService {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        System.out.println("MealPlanService.getMealPlanYearMonth");
-        List<MealPlan> fid = mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(), year, month);
-        System.out.println("fid = " + fid.size());
-
         return YearMonthMealPlanResponse.build(
                 mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(), year, month).stream()
                         .filter(m -> m.getMember().getEmail().equals(member.getEmail()))

@@ -15,6 +15,10 @@ public class IntakeFormRequest {
     private String intakeTitle;
 
     @NotNull
+    @Schema(description = "음식이름", example = "계란찜")
+    private String foodName;
+
+    @NotNull
     @Schema(description = "섭취칼로리", example = "120")
     private double intakeKcal;
 

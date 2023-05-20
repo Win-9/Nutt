@@ -33,6 +33,7 @@ public class DailyIntakeService {
         }
 
         Intake intake = Intake.builder()
+                .intakeFoodName(request.getFoodName())
                 .intakeKcal(request.getIntakeKcal())
                 .intakeCarbohydrate(request.getIntakeCarbohydrate())
                 .intakeProtein(request.getIntakeProtein())
