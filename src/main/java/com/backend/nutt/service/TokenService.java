@@ -1,5 +1,7 @@
 package com.backend.nutt.service;
 import com.backend.nutt.dto.response.Token;
+import com.backend.nutt.exception.ErrorMessage;
+import com.backend.nutt.exception.unavailable.TokenExpiredException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -68,17 +71,15 @@ public class TokenService {
         return body.getSubject();
     }
 
-    public boolean checkToken(String token) {
+    public boolean checkToken(String token) throws TokenExpiredException {
         Claims body = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        try {
-            return body.getExpiration().after(new Date());
-        } catch (Exception e) {
-            return false;
-        }
+        return Optional.ofNullable(body.getExpiration())
+                .map(expiration -> expiration.after(new Date()))
+                .orElseThrow(() -> new TokenExpiredException(ErrorMessage.ACCESS_TOKEN_EXPIRED));
     }
 }

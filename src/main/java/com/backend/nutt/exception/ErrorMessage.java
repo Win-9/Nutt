@@ -7,5 +7,6 @@ public enum ErrorMessage {
     EXIST_MEMBER,
     NOT_VALID_PASSWORD,
     NOT_VALID_EMAIL,
-    NOT_EXIST_FOOD
+    NOT_EXIST_FOOD,
+    ACCESS_TOKEN_EXPIRED
 }

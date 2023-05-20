@@ -10,7 +10,6 @@ import com.backend.nutt.dto.response.FormSignUpResponse;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
-import com.backend.nutt.exception.badrequest.PasswordNotMatchException;
 import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.service.AchieveService;
 import com.backend.nutt.service.MemberService;
@@ -62,7 +61,7 @@ public class LoginController {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
 
-        formSignUpRequest.setEmail(email);
+//        formSignUpRequest.setEmail(email);
         System.out.println("formSignUpRequest = " + formSignUpRequest.getEmail());
         Achieve achieve = achieveService.calculateKcal(formSignUpRequest);
         Member member = memberService.saveMember(formSignUpRequest, achieve);

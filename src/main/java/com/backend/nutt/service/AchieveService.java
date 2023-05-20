@@ -35,7 +35,6 @@ public class AchieveService {
         double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
 
         Achieve achieve = getAchieve(dailyTargetKcal);
-        achieveRepository.save(achieve);
         return DailyAchieveResponse.build(achieve);
     }
 

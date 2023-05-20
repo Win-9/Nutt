@@ -1,21 +1,32 @@
 package com.backend.nutt.exception;
 
-import com.backend.nutt.common.ResponseMessage;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 @AllArgsConstructor
-public class ExceptionResult {
+public class ExceptionResult<T> {
     private int status;
-    private ErrorMessage message;
-    private String cause;
+    private ErrorMessage errorMessage;
+    private String description;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private T cause;
 
-    public static ExceptionResult fail(int status, ErrorMessage message, String cause) {
+    public ExceptionResult(int status, ErrorMessage errorMessage, String description) {
+        this.status = status;
+        this.errorMessage = errorMessage;
+        this.description = description;
+    }
+
+    public static ExceptionResult fail(int status, ErrorMessage message, String description) {
         return new ExceptionResult(
                 status,
                 message,
-                cause
+                description
         );
     }
 }

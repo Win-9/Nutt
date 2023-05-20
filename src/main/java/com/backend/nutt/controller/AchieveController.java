@@ -28,14 +28,14 @@ public class AchieveController {
     /** 섭취량만을 계산하기 위한 API **/
     @PostMapping("/set/achieve")
     @Operation(summary = "목표 영양섭취량 제공", description = "사용자의 활동량 정보와 목표치를 입력받아 일일 목표 영양섭취량을 제공합니다.")
-    public ResponseEntity achieveSetController(@AuthenticationPrincipal Member member, @Valid MemberBodyInfoRequest request, BindingResult bindingResult) {
+    public ResponseEntity achieveSetController(@RequestBody @Valid MemberBodyInfoRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new FieldNotBindingException(ErrorMessage.NOT_VALID_INFO);
         }
 
-        if (member == null) {
-            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-        }
+//        if (member == null) {
+//            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+//        }
 
         DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(request);
         return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
@@ -43,7 +43,7 @@ public class AchieveController {
 
     @PutMapping("/login/set/achieve/check")
     @Operation(summary = "목표치 확인 및 수정", description = "활동량 정보로 나온 영양성분을 보여주며, 사용자가 이를 다시 수정할 수 있게 합니다.")
-    public ResponseEntity achieveSetCheckController(@AuthenticationPrincipal Member member, @Valid AchieveCheckRequest achieveCheckRequest, BindingResult bindingResult) {
+    public ResponseEntity achieveSetCheckController(@AuthenticationPrincipal Member member, @RequestBody @Valid AchieveCheckRequest achieveCheckRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new FieldNotBindingException(ErrorMessage.NOT_VALID_INFO);
         }
