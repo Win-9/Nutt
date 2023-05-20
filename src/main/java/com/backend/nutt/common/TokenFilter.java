@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 @RequiredArgsConstructor
 @Component
@@ -21,7 +22,15 @@ public class TokenFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        String accessToken = httpServletRequest.getHeader("Access-Token");
+        Enumeration<String> headers = httpServletRequest.getHeaders("Authorization");
+        String accessToken = null;
+        while (headers.hasMoreElements()) {
+            String value = headers.nextElement();
+            if (value.startsWith("Bearer")) {
+                accessToken = value.substring("Bearer".length()).trim();
+            }
+        }
+
 
         try {
             if (accessToken != null && tokenService.checkToken(accessToken)) {
