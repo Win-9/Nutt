@@ -6,6 +6,8 @@ import com.backend.nutt.domain.type.Gender;
 import com.backend.nutt.domain.type.Role;
 import com.backend.nutt.dto.request.AchieveSetRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
+import com.backend.nutt.dto.request.MemberBodyInfoRequest;
+import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.repository.AchieveRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +29,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientMaleLossTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "loss", 0.5 / 7);
-        FormSignUpRequest request = getRequest(Gender.MALE, 1.4, 0.5 / 7, "loss");
+        MemberBodyInfoRequest request = getRequest(Gender.MALE, 1.4, 0.5 / 7, "loss");
         Member member = getMember(Gender.MALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -35,13 +37,13 @@ class AchieveAlgorithmServiceTest {
         double dailyTargetKcal = tdee - (request.getWeightGainRate() * 7700 / 7);
 
         //when
-        Achieve response = achieveService.calculateKcal(request);
+        DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getAchieveKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
+        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
+        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
 //        System.out.println("response = " + response.getAchieveKcal());
 //        System.out.println("fat = " + response.getAchieveFat());
 //        System.out.println("protein = " + response.getAchieveProtein());
@@ -53,7 +55,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientMaleMaintenanceTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "maintenance", 0);
-        FormSignUpRequest request = getRequest(Gender.MALE, 1.4, 0, "maintenance");
+        MemberBodyInfoRequest request = getRequest(Gender.MALE, 1.4, 0, "maintenance");
         Member member = getMember(Gender.MALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -61,13 +63,13 @@ class AchieveAlgorithmServiceTest {
         double dailyTargetKcal = tdee;
 
         //when
-        Achieve response = achieveService.calculateKcal(request);
+        DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getAchieveKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
+        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
+        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
     }
 
     @Test
@@ -75,7 +77,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientMaleIncreaseTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "increase", 0.5 / 7);
-        FormSignUpRequest request = getRequest(Gender.MALE, 1.4, 0.5 / 7, "increase");
+        MemberBodyInfoRequest request = getRequest(Gender.MALE, 1.4, 0.5 / 7, "increase");
         Member member = getMember(Gender.MALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -83,13 +85,13 @@ class AchieveAlgorithmServiceTest {
         double dailyTargetKcal = tdee + (request.getWeightGainRate() * 7700 / 7);
 
         //when
-        Achieve response = achieveService.calculateKcal(request);
+        DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getAchieveKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
+        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
+        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
     }
 
     @Test
@@ -97,7 +99,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientFemaleLossTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "loss", 0.5 / 7);
-        FormSignUpRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "loss");
+        MemberBodyInfoRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "loss");
         Member member = getMember(Gender.FEMALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -105,13 +107,13 @@ class AchieveAlgorithmServiceTest {
         double dailyTargetKcal = tdee - (request.getWeightGainRate() * 7700 / 7);
 
         //when
-        Achieve response = achieveService.calculateKcal(request);
+        DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getAchieveKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
+        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
+        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
     }
 
     @Test
@@ -119,7 +121,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientFemaleMaintenanceTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "maintenance", 0.5 / 7);
-        FormSignUpRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "maintenance");
+        MemberBodyInfoRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "maintenance");
         Member member = getMember(Gender.FEMALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -127,13 +129,13 @@ class AchieveAlgorithmServiceTest {
         double dailyTargetKcal = tdee;
 
         //when
-        Achieve response = achieveService.calculateKcal(request);
+        DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getAchieveKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
+        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
+        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
     }
 
     @Test
@@ -141,7 +143,7 @@ class AchieveAlgorithmServiceTest {
     public void nutrientFemaleIncreaseTest() {
         // given
 //        AchieveSetRequest request = getRequest(1.4, "increase", 0.5 / 7);
-        FormSignUpRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "increase");
+        MemberBodyInfoRequest request = getRequest(Gender.FEMALE, 1.4, 0.5 / 7, "increase");
         Member member = getMember(Gender.FEMALE);
 
         double bmr = getBmr(member, String.valueOf(member.getGender()));
@@ -149,13 +151,13 @@ class AchieveAlgorithmServiceTest {
         double dailyTargetKcal = tdee + (request.getWeightGainRate() * 7700 / 7);
 
         //when
-        Achieve response = achieveService.calculateKcal(request);
+        DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getAchieveKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getAchieveFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getAchieveCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getAchieveProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
+        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
+        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
     }
 
     private double getBmr(Member member, String gender) {
@@ -190,12 +192,9 @@ class AchieveAlgorithmServiceTest {
                 .build();
     }
 
-    private FormSignUpRequest getRequest(Gender gender, double pal, double weightGainRate, String target) {
-        return new FormSignUpRequest(
-                "test@naver.com",
+    private MemberBodyInfoRequest getRequest(Gender gender, double pal, double weightGainRate, String target) {
+        return new MemberBodyInfoRequest(
                 20,
-                "abcdeftgas12",
-                "test",
                 gender.toString(),
                 170.5,
                 70,
@@ -203,6 +202,7 @@ class AchieveAlgorithmServiceTest {
                 weightGainRate,
                 target
         );
+
     }
 
 }

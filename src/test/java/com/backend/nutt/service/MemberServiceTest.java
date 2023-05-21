@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 
 @SpringBootTest
 class MemberServiceTest {
@@ -40,7 +41,7 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "qwert1234!", "testName",
-                "MALE", 170.5, 40.5, any(), any(), any());
+                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
 
         //when
         memberService.saveMember(formSignUpRequest, any());
@@ -60,7 +61,7 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "abcd", "testName",
-                "MALE", 170.5, 40.5, any(), any(), any());
+                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
         //when
         PasswordNotValid exception = assertThrows(PasswordNotValid.class,
                 () -> memberService.saveMember(formSignUpRequest, any()));
@@ -75,7 +76,7 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "qwert1234!", "testName",
-                "MALE", 170.5, 40.5, any(), any(), any());
+                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
         Member saveMember = memberService.saveMember(formSignUpRequest, any());
         FormLoginUserRequest request = new FormLoginUserRequest("kim@naver.com", "qwert1234!");
 
@@ -96,7 +97,7 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "qwert1234!", "testName",
-                "MALE", 170.5, 40.5, any(), any(), any());
+                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
         Member member = memberService.saveMember(formSignUpRequest, any());
 
         //when
@@ -156,9 +157,10 @@ class MemberServiceTest {
                 "MALE",
                 170.5,
                 45.1,
-                any(),
-                any(),
-                any()
+                anyDouble(),
+                anyDouble(),
+                anyDouble(),
+                anyDouble()
         );
 
         memberService.saveMember(firstRequest, any());
@@ -183,12 +185,13 @@ class MemberServiceTest {
                 "MALE",
                 170.5,
                 45.1,
-                any(),
-                any(),
-                any()
+                anyDouble(),
+                anyDouble(),
+                anyDouble(),
+                anyDouble()
         );
 
-        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "aaaaaaaa12");
+        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "aaaaaaaa12!");
 
         memberService.saveMember(firstRequest, any());
 

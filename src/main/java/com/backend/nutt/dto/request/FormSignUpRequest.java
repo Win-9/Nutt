@@ -42,14 +42,18 @@ public class FormSignUpRequest {
     private double weight;
 
     @NotNull
-    @Schema(description = "PAL 수치")
-    private double pal;
+    @Schema(description = "일일 섭취해야하는 칼로리", example = "1500")
+    private double dailyKcal;
 
     @NotNull
-    @Schema(description = "일주일간 목표 증감율")
-    private double weightGainRate;
+    @Schema(description = "일일 섭취해야하는 탄수화물", example = "100")
+    private double dailyCarbohydrate;
 
     @NotNull
-    @Schema(description = "체중유지, 체중감소, 체중증가", allowableValues = {"loss", "maintenance", "increase"})
-    private String target;
+    @Schema(description = "일일 섭취해야하는 프로틴", example = "60")
+    private double dailyProtein;
+
+    @NotNull
+    @Schema(description = "일일 섭취해야하는 지방", example = "40")
+    private double dailyFat;
 }
