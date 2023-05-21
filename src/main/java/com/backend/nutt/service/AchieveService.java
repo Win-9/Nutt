@@ -7,7 +7,7 @@ import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.request.MemberBodyInfoRequest;
 import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.repository.AchieveRepository;
-import com.backend.nutt.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +15,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AchieveService {
     private final AchieveRepository achieveRepository;
-    private final MemberRepository memberRepository;
 
-    public Achieve calculateKcal(FormSignUpRequest request) {
-        String gender = String.valueOf(request.getGender());
-        double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
-        double tdee = bmr * request.getPal();
-        double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
-
-        Achieve achieve = getAchieve(dailyTargetKcal);
-        achieveRepository.save(achieve);
-        return achieve;
-    }
+//    public Achieve calculateKcal(FormSignUpRequest request) {
+//        String gender = String.valueOf(request.getGender());
+//        double bmr = getBmr(request.getWeight(), request.getHeight(), request.getAge(), gender);
+//        double tdee = bmr * request.getPal();
+//        double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
+//
+//        Achieve achieve = getAchieve(dailyTargetKcal);
+//        achieveRepository.save(achieve);
+//        return achieve;
+//    }
 
     public DailyAchieveResponse calculateKcal(MemberBodyInfoRequest request) {
         String gender = String.valueOf(request.getGender());
@@ -34,11 +33,11 @@ public class AchieveService {
         double tdee = bmr * request.getPal();
         double dailyTargetKcal = getTargetKcal(request.getTarget(), request.getWeightGainRate(), tdee);
 
-        Achieve achieve = getAchieve(dailyTargetKcal);
+        Achieve achieve = calculateAchieve(dailyTargetKcal);
         return DailyAchieveResponse.build(achieve);
     }
 
-    private Achieve getAchieve(double dailyTargetKcal) {
+    private Achieve calculateAchieve(double dailyTargetKcal) {
         double achieveCarbohydrate = (dailyTargetKcal * 0.45) / 4;
         double achieveProtein = (dailyTargetKcal * 0.35) / 4;
         double achieveFat = (dailyTargetKcal * 0.20) / 9;
@@ -49,6 +48,19 @@ public class AchieveService {
                 .achieveFat(achieveFat)
                 .achieveProtein(achieveProtein)
                 .build();
+        achieveRepository.save(achieve);
+        return achieve;
+    }
+
+    @Transactional
+    public Achieve getAchieve(FormSignUpRequest request) {
+        Achieve achieve = Achieve.builder()
+                .achieveKcal(request.getDailyKcal())
+                .achieveCarbohydrate(request.getDailyCarbohydrate())
+                .achieveFat(request.getDailyFat())
+                .achieveProtein(request.getDailyProtein())
+                .build();
+        achieveRepository.save(achieve);
         return achieve;
     }
 

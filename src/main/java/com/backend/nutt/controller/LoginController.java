@@ -61,9 +61,7 @@ public class LoginController {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
 
-//        formSignUpRequest.setEmail(email);
-        System.out.println("formSignUpRequest = " + formSignUpRequest.getEmail());
-        Achieve achieve = achieveService.calculateKcal(formSignUpRequest);
+        Achieve achieve = achieveService.getAchieve(formSignUpRequest);
         Member member = memberService.saveMember(formSignUpRequest, achieve);
         return ResponseEntity.ok().body(BaseResponse.success(FormSignUpResponse.build(member)));
     }
