@@ -1,7 +1,7 @@
 package com.backend.nutt.service;
 
-import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.Member;
+import com.backend.nutt.dto.response.TodayIntakeResponse;
 import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
@@ -9,7 +9,7 @@ import com.backend.nutt.repository.MealPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,5 +37,14 @@ public class MealPlanService {
                 mealPlanRepository.findByIntakeDateYearOrderByIntakeDateAsc(year).stream()
                         .filter(m -> m.getMember().getEmail().equals(member.getEmail()))
                         .collect(Collectors.toList()));
+    }
+
+    public TodayIntakeResponse getTodayIntake(Member member) {
+        if (member == null) {
+            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+        }
+
+        return TodayIntakeResponse.build(mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(),
+                LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
     }
 }

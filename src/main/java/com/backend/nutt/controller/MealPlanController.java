@@ -3,6 +3,7 @@ package com.backend.nutt.controller;
 import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.IntakeFormRequest;
+import com.backend.nutt.dto.response.TodayIntakeResponse;
 import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
 import com.backend.nutt.service.DailyIntakeService;
@@ -64,5 +65,15 @@ public class MealPlanController {
         return ResponseEntity.ok().body(BaseResponse.success(response));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공", content =
+            @Content(schema = @Schema(implementation = TodayIntakeResponse.class)))
+    })
+    @GetMapping("/search/today-intake")
+    @Operation(summary = "오늘의 섭취기록", description = "오늘의 섭취기록에 대한 정보를 확인합니다.")
+    public ResponseEntity getTodayIntakeRecord(@AuthenticationPrincipal Member member) {
+        TodayIntakeResponse response = mealPlanService.getTodayIntake(member);
+        return ResponseEntity.ok().body(BaseResponse.success(response));
+    }
 
 }
