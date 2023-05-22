@@ -3,12 +3,15 @@ package com.backend.nutt.controller;
 import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.request.IntakeFormRequest;
-import com.backend.nutt.dto.response.IntakeYearResponse;
 import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
 import com.backend.nutt.service.DailyIntakeService;
 import com.backend.nutt.service.MealPlanService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,10 @@ public class MealPlanController {
         return ResponseEntity.ok().body(BaseResponse.success());
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공", content =
+            @Content(schema = @Schema(implementation = YearMonthMealPlanResponse.class)))
+    })
     @GetMapping("/search/date/{year}/{month}")
     @Operation(summary = "년도, 월 별 섭취기록", description = "년도와 달을 검색하여 섭취한 기록들을 확인합니다.")
     public ResponseEntity getIntakeRecordMonth(@AuthenticationPrincipal Member member, @PathVariable int year, @PathVariable int month) {
@@ -46,6 +53,10 @@ public class MealPlanController {
         return ResponseEntity.ok().body(BaseResponse.success(response));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공", content =
+            @Content(schema = @Schema(implementation = YearMonthMealPlanResponse.class)))
+    })
     @GetMapping("/search/year/{intakeYear}")
     @Operation(summary = "년도별 섭취기록", description = "년도를 검색하여 섭취한 기록들을 확인합니다.")
     public ResponseEntity getIntakeRecordYear(@AuthenticationPrincipal Member member, @PathVariable int intakeYear) {

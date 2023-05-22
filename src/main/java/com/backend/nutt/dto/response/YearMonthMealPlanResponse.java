@@ -4,6 +4,7 @@ import com.backend.nutt.domain.Intake;
 import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.type.IntakeTitle;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,8 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 public class YearMonthMealPlanResponse {
-    @JsonFormat(pattern = "YYYY-MM")
+    @JsonFormat(pattern = "yyyy-MM")
+    @Schema(description = "날짜{년도-월}", example = "2023-05")
     private LocalDate date;
     private List<MealData> mealData;
 
@@ -25,32 +27,48 @@ public class YearMonthMealPlanResponse {
     @Setter
     @NoArgsConstructor
     static class MealData {
-        @JsonFormat(pattern = "YYYY-MM-DD")
+        @Schema(description = "날짜{년도-월-일}", example = "2023-05-13")
+        @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate date;
 
+        @Schema(description = "시간{시:분}", example = "11:18")
         @JsonFormat(pattern = "hh:mm")
         private LocalTime time;
 
-//        private String img;
+        @Schema(description = "이미지 링크", example = "http../asd/sadf...")
+        private String img;
+
+        @Schema(description = "섭취정보")
         private IntegratedInfo info;
 
         @Getter
         @Setter
         @NoArgsConstructor
         static class IntegratedInfo {
+            @Schema(description = "섭취시간", example = "LUNCH")
             private IntakeTitle mealTime;
+
+            @Schema(description = "섭취음식 정보")
             private List<Food> foods;
 
             @Getter
             @Setter
             @NoArgsConstructor
             static class Food {
+                @Schema(description = "섭취음식", example = "계란찜")
                 private String name;
-                private double kcal;
-                private double carbohydrate;
-                private double protein;
-                private double fat;
 
+                @Schema(description = "섭취음식", example = "계란찜")
+                private double kcal;
+
+                @Schema(description = "섭취음식", example = "계란찜")
+                private double carbohydrate;
+
+                @Schema(description = "섭취음식", example = "계란찜")
+                private double protein;
+
+                @Schema(description = "섭취음식", example = "계란찜")
+                private double fat;
             }
         }
     }
