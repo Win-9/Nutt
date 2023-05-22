@@ -66,4 +66,11 @@ public class MealPlan extends BaseTimeEntity {
         this.intakeTitle = intakeTitle;
     }
 
+    public void addIntakeNutrient(Intake intake) {
+        this.intakeKcalSum += intake.getIntakeKcal();
+        this.intakeCarbohydrateSum += intake.getIntakeCarbohydrate();
+        this.intakeProteinSum += intake.getIntakeProtein();
+        this.intakeFatSum += intake.getIntakeFat();
+    }
+
 }
