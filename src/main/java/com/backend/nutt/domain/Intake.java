@@ -44,5 +44,6 @@ public class Intake {
 
         this.mealPlan = mealPlan;
         mealPlan.getIntakeList().add(this);
+        mealPlan.addIntakeNutrient(this);
     }
 }

@@ -54,7 +54,6 @@ public class DailyIntakeService {
                     .intakeTime(LocalTime.now())
                     .intakeList(new ArrayList<>())
                     .build();
-            mealPlan.setIntakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()));
             mealPlan.setMember(member);
             mealPlanRepository.save(mealPlan);
 
