@@ -5,6 +5,7 @@ import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.type.IntakeTitle;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Setter
+@Getter
 /** 하루 전체에 대한 데이터 **/
 public class TodayIntakeResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -38,6 +40,7 @@ public class TodayIntakeResponse {
 
     @NoArgsConstructor
     @Setter
+    @Getter
     /** 한 식단에 대한 데이터 **/
     static class MealData {
         @Schema(description = "섭취 때", example = "LUNCH")
@@ -63,6 +66,7 @@ public class TodayIntakeResponse {
         private List<Food> foods;
 
         @Setter
+        @Getter
         @NoArgsConstructor
         static class Food {
             @Schema(description = "섭취음식", example = "계란찜")
@@ -95,7 +99,7 @@ public class TodayIntakeResponse {
             List<MealData.Food> foods = new ArrayList<>();
 
             addFood(mealPlan, foods);
-            addMealData(mealDataList, mealPlan, mealData);
+            addMealData(mealDataList, mealPlan, mealData, foods);
 
             intakeFat += mealPlan.getIntakeFatSum();
             intakeCarbohydrate += mealPlan.getIntakeCarbohydrateSum();
@@ -109,6 +113,7 @@ public class TodayIntakeResponse {
             return response;
         }
 
+        response.setDate(mealPlans.get(0).getIntakeDate());
         setResponse(response, mealDataList, intakeKcal, intakeFat, intakeCarbohydrate, intakeProtein);
         return response;
     }
@@ -121,13 +126,14 @@ public class TodayIntakeResponse {
         response.setIntakeKcalSum(intakeKcal);
     }
 
-    private static void addMealData(List<MealData> mealDataList, MealPlan mealPlan, MealData mealData) {
+    private static void addMealData(List<MealData> mealDataList, MealPlan mealPlan, MealData mealData, List<MealData.Food> foods) {
         mealData.setTime(mealPlan.getIntakeTime());
         mealData.setMealTime(mealPlan.getIntakeTitle());
         mealData.setIntakeFat(mealPlan.getIntakeFatSum());
         mealData.setIntakeCarbohydrate(mealPlan.getIntakeCarbohydrateSum());
         mealData.setIntakeProtein(mealPlan.getIntakeProteinSum());
         mealData.setIntakeKcal(mealPlan.getIntakeKcalSum());
+        mealData.setFoods(foods);
         mealDataList.add(mealData);
     }
 

@@ -1,5 +1,6 @@
 package com.backend.nutt.service;
 
+import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.response.TodayIntakeResponse;
 import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +45,10 @@ public class MealPlanService {
         if (member == null) {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
+
+        List<MealPlan> byMemberIdAndIntakeDate = mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(),
+                LocalDate.now().getYear(), LocalDate.now().getMonthValue());
+        System.out.println("byMemberIdAndIntakeDate = " + byMemberIdAndIntakeDate.size());
 
         return TodayIntakeResponse.build(mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(),
                 LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
