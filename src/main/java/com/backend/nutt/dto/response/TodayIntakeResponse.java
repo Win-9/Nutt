@@ -44,11 +44,14 @@ public class TodayIntakeResponse {
     /** 한 식단에 대한 데이터 **/
     static class MealData {
         @Schema(description = "섭취 때", example = "LUNCH")
-        IntakeTitle mealTime;
+        private IntakeTitle mealTime;
+
+        @Schema(description = "이미지 링크")
+        private String img;
 
         @JsonFormat(pattern = "hh:mm")
         @Schema(description = "섭취 시간")
-        LocalTime time;
+        private LocalTime time;
 
         @Schema(description = "식단별 섭취 칼로리", example = "500")
         private double intakeKcal;
