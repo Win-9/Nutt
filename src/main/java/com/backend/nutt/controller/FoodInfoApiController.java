@@ -40,6 +40,11 @@ public class FoodInfoApiController {
             "김치찌개", "삼겹살", "된장찌개", "감자탕", "라면", "피자", "양념치킨", "후라이드치킨",
             "배추김치", "깍두기", "불고기", "고등어구이", "짜장면", "짬뽕", "계란찜", "계란후라이");
 
+    private List<String> foodEngList = List.of("Mandu", "KKennip", "Jabgokbab",
+            "Jeyukbokum", "Gimchizzigae", "Samgyupsal", "Duinjangzzigae", "Gamjatang",
+            "Ramyun", "Pizza", "Yangnyumchicken", "Friedchicken", "BaechuKimchi",
+            "Kkakdugi", "Bulgogi", "Godeungeogui", "Zzajangmyun", "Zzambbong", "Gyeranjjim", "Friedegg");
+
     private List<String> foodCodeList = List.of("P001536", "D018388", "P090971", "D018288",
             "D000385", "D000385", "D018480", "D018467", "D018163", "D000304", "D000475", "D018547",
             "D018116", "D018111", "D000016", "D018018", "D018180", "D000167", "P036993");
@@ -107,7 +112,7 @@ public class FoodInfoApiController {
             JSONObject rowObj = jsonObject.getJSONObject("I2790").getJSONObject("row");
 
             Food food = Food.builder()
-                    .name(foodList.get(i))
+                    .name(foodEngList.get(i))
                     .kcal(rowObj.getDouble("NUTR_CONT1"))
                     .carbohydrate(rowObj.getDouble("NUTR_CONT2"))
                     .protein(rowObj.getDouble("NUTR_CONT3"))
@@ -119,7 +124,7 @@ public class FoodInfoApiController {
 
         // 계란 후라이
         Food food = Food.builder()
-                .name(foodList.get(foodList.size() - 1))
+                .name(foodEngList.get(foodEngList.size() - 1))
                 .kcal(120)
                 .carbohydrate(0.43)
                 .protein(6.24)
