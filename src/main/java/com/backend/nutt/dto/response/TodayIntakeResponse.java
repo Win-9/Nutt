@@ -1,5 +1,6 @@
 package com.backend.nutt.dto.response;
 
+import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Intake;
 import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.type.IntakeTitle;
@@ -22,6 +23,18 @@ public class TodayIntakeResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(description = "날짜", example = "2023-05-10")
     private LocalDate date;
+
+    @Schema(description = "일일 목표 칼로리", example = "2100.10")
+    private double dailyKcal;
+
+    @Schema(description = "일일 목표 탄수화물", example = "계란찜")
+    private double dailyCarbohydrate;
+
+    @Schema(description = "일일 목표 단백질", example = "계란찜")
+    private double dailyProtein;
+
+    @Schema(description = "일일 목표 지방", example = "계란찜")
+    private double dailyFat;
 
     @Schema(description = "총 섭취 칼로리", example = "1500")
     private double intakeKcalSum;
@@ -89,7 +102,7 @@ public class TodayIntakeResponse {
         }
     }
 
-    public static TodayIntakeResponse build(List<MealPlan> mealPlans) {
+    public static TodayIntakeResponse build(List<MealPlan> mealPlans, Achieve achieve) {
         TodayIntakeResponse response = new TodayIntakeResponse();
         List<MealData> mealDataList = new ArrayList<>();
         double intakeKcal = 0;
@@ -110,6 +123,8 @@ public class TodayIntakeResponse {
             intakeKcal += mealPlan.getIntakeKcalSum();
         }
 
+        setAchieve(achieve, response);
+
         if (mealPlans.size() == 0) {
             response.setMealData(null);
             response.setDate(null);
@@ -119,6 +134,13 @@ public class TodayIntakeResponse {
         response.setDate(mealPlans.get(0).getIntakeDate());
         setResponse(response, mealDataList, intakeKcal, intakeFat, intakeCarbohydrate, intakeProtein);
         return response;
+    }
+
+    private static void setAchieve(Achieve achieve, TodayIntakeResponse response) {
+        response.setDailyKcal(achieve.getAchieveKcal());
+        response.setDailyKcal(achieve.getAchieveCarbohydrate()) ;
+        response.setDailyProtein(achieve.getAchieveProtein());
+        response.setDailyFat(achieve.getAchieveFat());
     }
 
     private static void setResponse(TodayIntakeResponse response, List<MealData> mealDataList, double intakeKcal, double intakeFat, double intakeCarbohydrate, double intakeProtein) {

@@ -1,11 +1,14 @@
 package com.backend.nutt.service;
 
+import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.response.TodayIntakeResponse;
 import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.MealPlanRepository;
+import com.backend.nutt.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MealPlanService {
     private final MealPlanRepository mealPlanRepository;
+    private final MemberRepository memberRepository;
 
     public YearMonthMealPlanResponse getMealPlanYearMonth(Member member, int year, int month) {
         if (member == null) {
@@ -45,6 +49,6 @@ public class MealPlanService {
         }
 
         return TodayIntakeResponse.build(mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(),
-                LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
+                LocalDate.now().getYear(), LocalDate.now().getMonthValue()), member.getAchieve());
     }
 }
