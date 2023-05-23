@@ -37,6 +37,10 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
 	implementation 'org.glassfish:jakarta.el:3.0.3'
 
+	//S3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
