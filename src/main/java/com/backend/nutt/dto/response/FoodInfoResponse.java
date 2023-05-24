@@ -26,10 +26,10 @@ public class FoodInfoResponse {
     public static FoodInfoResponse build(Food food) {
         return new FoodInfoResponse(
                 food.getName(),
-                food.getKcal(),
-                food.getCarbohydrate(),
-                food.getProtein(),
-                food.getFat()
+                Math.round(food.getKcal() * 10.0) / 10.0,
+                Math.round(food.getCarbohydrate() * 10.0) / 10.0,
+                Math.round(food.getProtein() * 10.0) / 10.0,
+                Math.round(food.getFat() * 10.0) / 10.0
         );
     }
 }

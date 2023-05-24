@@ -32,10 +32,10 @@ public class IntakeYearResponse {
 
     public static IntakeYearResponse build(Intake intake) {
         return new IntakeYearResponse(
-                intake.getIntakeKcal(),
-                intake.getIntakeCarbohydrate(),
-                intake.getIntakeFat(),
-                intake.getIntakeProtein(),
+                Math.round(intake.getIntakeKcal() * 10.0) / 10.0,
+                Math.round(intake.getIntakeCarbohydrate() * 10.0) / 10.0,
+                Math.round(intake.getIntakeFat() * 10.0) / 10.0,
+                Math.round(intake.getIntakeProtein() * 10.0) / 10.0,
                 intake.getIntakeDate(),
                 intake.getIntakeTime()
         );

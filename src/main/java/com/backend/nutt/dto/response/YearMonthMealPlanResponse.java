@@ -94,10 +94,10 @@ public class YearMonthMealPlanResponse {
             for (Intake intake : mealPlan.getIntakeList()) {
                 MealData.IntegratedInfo.Food food = new MealData.IntegratedInfo.Food();
                 food.setName(intake.getIntakeFoodName());
-                food.setKcal(intake.getIntakeKcal());
-                food.setCarbohydrate(intake.getIntakeCarbohydrate());
-                food.setProtein(intake.getIntakeProtein());
-                food.setFat(intake.getIntakeFat());
+                food.setKcal(Math.round(intake.getIntakeKcal() * 10.0) / 10.0);
+                food.setCarbohydrate(Math.round(intake.getIntakeCarbohydrate() * 10.0) / 10.0);
+                food.setProtein(Math.round(intake.getIntakeProtein() * 10.0) / 10.0);
+                food.setFat(Math.round(intake.getIntakeFat() * 10.0) / 10.0);
                 foods.add(food);
             }
 
