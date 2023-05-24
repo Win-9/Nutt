@@ -5,7 +5,6 @@ import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.domain.type.IntakeTitle;
 import com.backend.nutt.dto.request.IntakeFormRequest;
-import com.backend.nutt.dto.response.IntakeYearResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
 import com.backend.nutt.repository.IntakeRepository;
@@ -27,7 +26,7 @@ public class DailyIntakeService {
     private final MealPlanRepository mealPlanRepository;
 
     @Transactional
-    public void saveDailyIntake(Member member, IntakeFormRequest request) {
+    public void saveDailyIntake(Member member, IntakeFormRequest request, String imageUrl) {
         if (member == null) {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
@@ -50,6 +49,7 @@ public class DailyIntakeService {
         if (findMealPlan == null) {
             MealPlan mealPlan = MealPlan.builder()
                     .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
+                    .imageUrl(imageUrl)
                     .intakeDate(LocalDate.now())
                     .intakeTime(LocalTime.now())
                     .intakeList(new ArrayList<>())

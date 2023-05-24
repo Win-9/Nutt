@@ -159,6 +159,7 @@ public class TodayIntakeResponse {
         mealData.setIntakeProtein(mealPlan.getIntakeProteinSum());
         mealData.setIntakeKcal(mealPlan.getIntakeKcalSum());
         mealData.setFoods(foods);
+        mealData.setImg(mealPlan.getImageUrl());
         mealDataList.add(mealData);
     }
 

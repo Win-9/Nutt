@@ -82,6 +82,7 @@ public class YearMonthMealPlanResponse {
             MealData mealData = new MealData();
             mealData.setDate(mealPlan.getIntakeDate());
             mealData.setTime(mealPlan.getIntakeTime());
+            mealData.setImg(mealPlan.getImageUrl());
 
             // IntegratedInfo Class
             MealData.IntegratedInfo info = new MealData.IntegratedInfo();
