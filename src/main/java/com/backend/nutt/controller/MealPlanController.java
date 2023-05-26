@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +35,7 @@ import static com.backend.nutt.exception.ErrorMessage.NOT_VALID_INFO;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class MealPlanController {
     private final DailyIntakeService dailyIntakeService;
     private final MealPlanService mealPlanService;
@@ -41,13 +43,14 @@ public class MealPlanController {
 
     @PostMapping(value = "/record-intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "섭취기록", description = "일일 섭취량을 기록한다.")
-    public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestPart(value = "request") @Valid IntakeFormRequest intakeFormRequest,
-                                          @RequestPart(value = "imageFile") MultipartFile multipartFile, BindingResult result) throws IOException {
+    public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest
+                                          , /*@RequestPart(value = "imageFile") MultipartFile multipartFile,*/ BindingResult result) throws IOException {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
 
-        String imageName = s3Service.upload(multipartFile);
+        String imageName = s3Service.upload(intakeFormRequest.getImage());
+        log.info("file = {}", imageName);
         dailyIntakeService.saveDailyIntake(member, intakeFormRequest, imageName);
         return ResponseEntity.ok().body(BaseResponse.success());
     }

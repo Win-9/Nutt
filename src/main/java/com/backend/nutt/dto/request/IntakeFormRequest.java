@@ -33,4 +33,8 @@ public class IntakeFormRequest {
     @NotNull
     @Schema(description = "섭취단백질", example = "60")
     private double intakeProtein;
+
+    @NotNull
+    @Schema(description = "Base64 Encode Image")
+    private String image;
 }
