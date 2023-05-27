@@ -22,9 +22,9 @@ public class DailyAchieveResponse {
 
     public static DailyAchieveResponse build(Achieve achieve) {
         return new DailyAchieveResponse(
-                achieve.getAchieveKcal(),
-                achieve.getAchieveCarbohydrate(),
-                achieve.getAchieveProtein(),
-                achieve.getAchieveFat());
+                Math.round(achieve.getAchieveKcal() * 10.0) / 10.0,
+                Math.round(achieve.getAchieveCarbohydrate() * 10.0) / 10.0,
+                Math.round(achieve.getAchieveProtein() * 10.0) / 10.0,
+                Math.round(achieve.getAchieveFat() * 10.0) / 10.0);
     }
 }

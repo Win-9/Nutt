@@ -8,6 +8,7 @@ import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
 import com.backend.nutt.service.DailyIntakeService;
 import com.backend.nutt.service.MealPlanService;
+import com.backend.nutt.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,11 +17,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static com.backend.nutt.exception.ErrorMessage.NOT_VALID_INFO;
 
@@ -29,17 +35,23 @@ import static com.backend.nutt.exception.ErrorMessage.NOT_VALID_INFO;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class MealPlanController {
     private final DailyIntakeService dailyIntakeService;
     private final MealPlanService mealPlanService;
+    private final S3Service s3Service;
 
-    @PostMapping("/record-intake")
+    @PostMapping(value = "/record-intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "섭취기록", description = "일일 섭취량을 기록한다.")
-    public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest, BindingResult result) {
+    public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest
+                                          , /*@RequestPart(value = "imageFile") MultipartFile multipartFile,*/ BindingResult result) throws IOException {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
-        dailyIntakeService.saveDailyIntake(member, intakeFormRequest);
+
+        String imageName = s3Service.upload(intakeFormRequest.getImage());
+        log.info("file = {}", imageName);
+        dailyIntakeService.saveDailyIntake(member, intakeFormRequest, imageName);
         return ResponseEntity.ok().body(BaseResponse.success());
     }
 

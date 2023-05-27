@@ -49,9 +49,9 @@ public class FormSignUpResponse {
                 member.getGender().toString(),
                 member.getHeight(),
                 member.getWeight(),
-                member.getAchieve().getAchieveKcal(),
-                member.getAchieve().getAchieveCarbohydrate(),
-                member.getAchieve().getAchieveProtein(),
-                member.getAchieve().getAchieveFat());
+                Math.round(member.getAchieve().getAchieveKcal() * 10.0) / 10.0,
+                Math.round(member.getAchieve().getAchieveCarbohydrate() * 10.0) / 10.0,
+                Math.round(member.getAchieve().getAchieveProtein() * 10.0) / 10.0,
+                Math.round(member.getAchieve().getAchieveFat() * 10.0) / 10.0);
     }
 }

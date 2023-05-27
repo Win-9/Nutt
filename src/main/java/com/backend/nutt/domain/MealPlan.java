@@ -46,12 +46,6 @@ public class MealPlan extends BaseTimeEntity {
     private double intakeProteinSum;
 
     private String imageUrl;
-    private String imageName;
-
-    public void setImage(String imageUrl, String imageName) {
-        this.imageUrl = imageUrl;
-        this.imageName = imageName;
-    }
 
     public void setMember(Member member) {
         if (this.member != null) {

@@ -137,38 +137,39 @@ public class TodayIntakeResponse {
     }
 
     private static void setAchieve(Achieve achieve, TodayIntakeResponse response) {
-        response.setDailyKcal(achieve.getAchieveKcal());
-        response.setDailyKcal(achieve.getAchieveCarbohydrate()) ;
-        response.setDailyProtein(achieve.getAchieveProtein());
-        response.setDailyFat(achieve.getAchieveFat());
+        response.setDailyKcal(Math.round(achieve.getAchieveKcal() * 10.0) / 10.0);
+        response.setDailyKcal(Math.round(achieve.getAchieveCarbohydrate() * 10.0) / 10.0) ;
+        response.setDailyProtein(Math.round(achieve.getAchieveProtein() * 10.0) / 10.0);
+        response.setDailyFat(Math.round(achieve.getAchieveFat() * 10.0) / 10.0);
     }
 
     private static void setResponse(TodayIntakeResponse response, List<MealData> mealDataList, double intakeKcal, double intakeFat, double intakeCarbohydrate, double intakeProtein) {
         response.setMealData(mealDataList);
-        response.setIntakeCarbohydrateSum(intakeCarbohydrate);
-        response.setIntakeFatSum(intakeFat);
-        response.setIntakeProteinSum(intakeProtein);
-        response.setIntakeKcalSum(intakeKcal);
+        response.setIntakeCarbohydrateSum(Math.round(intakeCarbohydrate * 10.0) / 10.0);
+        response.setIntakeFatSum(Math.round(intakeFat * 10.0) / 10.0);
+        response.setIntakeProteinSum(Math.round(intakeProtein * 10.0) / 10.0);
+        response.setIntakeKcalSum(Math.round(intakeKcal * 10.0) / 10.0);
     }
 
     private static void addMealData(List<MealData> mealDataList, MealPlan mealPlan, MealData mealData, List<MealData.Food> foods) {
         mealData.setTime(mealPlan.getIntakeTime());
         mealData.setMealTime(mealPlan.getIntakeTitle());
-        mealData.setIntakeFat(mealPlan.getIntakeFatSum());
-        mealData.setIntakeCarbohydrate(mealPlan.getIntakeCarbohydrateSum());
-        mealData.setIntakeProtein(mealPlan.getIntakeProteinSum());
-        mealData.setIntakeKcal(mealPlan.getIntakeKcalSum());
+        mealData.setIntakeFat(Math.round(mealPlan.getIntakeFatSum() * 10.0) / 10.0);
+        mealData.setIntakeCarbohydrate(Math.round(mealPlan.getIntakeCarbohydrateSum() * 10.0) / 10.0);
+        mealData.setIntakeProtein(Math.round(mealPlan.getIntakeProteinSum() * 10.0) / 10.0);
+        mealData.setIntakeKcal(Math.round(mealPlan.getIntakeKcalSum() * 10.0) / 10.0);
         mealData.setFoods(foods);
+        mealData.setImg(mealPlan.getImageUrl());
         mealDataList.add(mealData);
     }
 
     private static void addFood(MealPlan mealPlan, List<MealData.Food> foods) {
         for (Intake intake : mealPlan.getIntakeList()) {
             MealData.Food food = new MealData.Food();
-            food.setKcal(intake.getIntakeKcal());
-            food.setProtein(intake.getIntakeProtein());
-            food.setCarbohydrate(intake.getIntakeCarbohydrate());
-            food.setFat(intake.getIntakeFat());
+            food.setKcal(Math.round(intake.getIntakeKcal()* 10.0) / 10.0);
+            food.setProtein(Math.round(intake.getIntakeProtein()* 10.0) / 10.0);
+            food.setCarbohydrate(Math.round(intake.getIntakeCarbohydrate()* 10.0) / 10.0);
+            food.setFat(Math.round(intake.getIntakeFat()* 10.0) / 10.0);
             food.setName(intake.getIntakeFoodName());
             foods.add(food);
         }
