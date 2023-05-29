@@ -138,7 +138,7 @@ public class TodayIntakeResponse {
 
     private static void setAchieve(Achieve achieve, TodayIntakeResponse response) {
         response.setDailyKcal(Math.round(achieve.getAchieveKcal() * 10.0) / 10.0);
-        response.setDailyKcal(Math.round(achieve.getAchieveCarbohydrate() * 10.0) / 10.0) ;
+        response.setDailyCarbohydrate(Math.round(achieve.getAchieveCarbohydrate() * 10.0) / 10.0); ;
         response.setDailyProtein(Math.round(achieve.getAchieveProtein() * 10.0) / 10.0);
         response.setDailyFat(Math.round(achieve.getAchieveFat() * 10.0) / 10.0);
     }
