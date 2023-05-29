@@ -8,10 +8,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -25,11 +25,11 @@ public class TokenService {
 
     private final MemberDetailService memberDetailService;
 
+    @Value("${jwt.secret-key}")
     private final String secretKey = "NUTTNUTTNUTTNUTSSSSEEECCCRRREEETTKKKEEYYNNUTNUUT";
     private static Key key;
-    private final long ACCESS_PERIOD = 10000000L;
-    private final long REFRESH_PERIOD = 10000000L;
-
+    private final long ACCESS_PERIOD = 1000 * 60 * 60 * 24 * 7L;
+    private final long REFRESH_PERIOD = 1000 * 60 * 60 * 24 * 14L;
     @PostConstruct
     private void setUPEncodeKey() {
         key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
