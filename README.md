@@ -4,7 +4,7 @@
 
 |Front-End Developer|AI Developer|Back-End Developer|
 |-|-|-|
-|Inhwa Kim: [https://github.com/radiantbeing](github)|MyeongSeok11: [https://github.com/MyeongSeok98](github)<br>dookh99: [https://github.com/dookh99](github),<br>dbsdurjs: [https://github.com/dbsdurjs](github)|Win9: [https://github.com/Win-9](github)|
+|Inhwa Kim: [github](https://github.com/radiantbeing)|MyeongSeok11: [github]([github](https://github.com/MyeongSeok98))<br>dookh99: [https://github.com/dookh99](github),<br>dbsdurjs: [github](https://github.com/dbsdurjs)|Win9: [github](https://github.com/Win-9)|
 
 ---
 
@@ -16,21 +16,23 @@
 
 ### Using
 * AI
-  - MobileNet
-  - YoLo
-  - ChatGPT
+|MobileNet|YoLo|ChatGPT|
+|-|-|-|
+| | | |
 
 * Front-end
-  - JavaScript
-  - TypeScript
-  - CSS
+
+|JavaScript|TypeScript|CSS|
+|-|-|-|
+|[![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=css)](https://skillicons.dev)|
 
 * Back-end
-  - Java
-  - SpringBoot
-  - SpringData JPA
-  - Spring Security
-  - MySQL
+
+|Java|SpringBoot|SpringData JPA|Spring Security|MySQL|
+|-|-|-|-|-|
+|[![My Skills](https://skillicons.dev/icons?i=java)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=spring)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=mysql)](https://skillicons.dev)|
+
+  
   - Jenkins
   - JWT
   - AWS S3
