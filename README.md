@@ -14,8 +14,10 @@
 * 개발기간 : 2023.03 ~ 2023.06
 * 인원 : 5명
 
+
 ### Using
 * AI
+  
 |MobileNet|YoLo|ChatGPT|
 |-|-|-|
 | | | |
@@ -32,18 +34,18 @@
 |-|-|-|-|-|
 |[![My Skills](https://skillicons.dev/icons?i=java)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=spring)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=mysql)](https://skillicons.dev)|
 
-  
-  - Jenkins
-  - JWT
-  - AWS S3
-  - NCloud
-  - Swagger
+|Jenkins|JWT|AWS|NCloud|Swagger|
+|-|-|-|-|-|
+|[![My Skills](https://skillicons.dev/icons?i=jenkins)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=jwt)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=aws)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=ncloud)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=swagger)](https://skillicons.dev)|
+
+---
 
 
 ### Table
 
 ![image](https://github.com/Win-9/Nutt/assets/80390524/56a7b113-2581-412b-99dc-d491c3c65504)   
 
+---
 
 ## 개요
 
@@ -52,7 +54,7 @@ Nutt는 객체탐지와 대화형 인공지능을 이용하여 개발한 식단�
 섭취할 음식의 사진을 찍어 음식의 영양성분들을 알아볼 수 있습니다. 또한 이를 기록하여 과거에 얼만큼의 영양소를 섭취했는지 열람할 수 있습니다.   
 식단관리에 대해 모르는것이 있을때는 대화형 인공지능을 이용하여 여러 질문을 할 수 있습니다. 또한 먹은 식단에 대해서 또다른 패드백을 해줍니다.   
 
-
+---
 
 ## 상세기능
 
@@ -100,7 +102,7 @@ https://github.com/Win-9/Nutt/assets/80390524/d1b8a466-df96-4084-89c4-e797955a04
 * 인공지능을 이용한 챗봇이므로 정해진 양식이 아니라, 자유롭게 질문이 가능합니다.
 * 건강과 관련한 질문이 아니면 대답하지 않습니다.
 
-
+---
 
 ## Awards
 * 캡스톤디자인 경진대회 은상 수상
