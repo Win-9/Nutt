@@ -4,7 +4,7 @@
 
 |Front-End Developer|AI Developer|Back-End Developer|
 |-|-|-|
-|Inhwa Kim: [github](https://github.com/radiantbeing)|MyeongSeok11: [github]([github](https://github.com/MyeongSeok98))<br>dookh99: [https://github.com/dookh99](github),<br>dbsdurjs: [github](https://github.com/dbsdurjs)|Win9: [github](https://github.com/Win-9)|
+|Inhwa Kim: [github](https://github.com/radiantbeing)|MyeongSeok11: [github](https://github.com/MyeongSeok98)<br>dookh99: [https://github.com/dookh99](github),<br>dbsdurjs: [github](https://github.com/dbsdurjs)|Win9: [github](https://github.com/Win-9)|
 
 ---
 
