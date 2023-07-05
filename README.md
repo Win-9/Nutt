@@ -4,9 +4,7 @@
 
 |Front-End Developer|AI Developer|Back-End Developer|
 |-|-|-|
-|Inhwa Kim: [https://github.com/radiantbeing]|MyeongSeok11: [https://github.com/MyeongSeok98],    
-dookh99: [https://github.com/dookh99],    
-dbsdurjs: [https://github.com/dbsdurjs]|Win9: [https://github.com/Win-9]|
+|Inhwa Kim: (github)[https://github.com/radiantbeing]|MyeongSeok11: (github)[https://github.com/MyeongSeok98]<br>dookh99: (github)[https://github.com/dookh99],<br>dbsdurjs: (github)[https://github.com/dbsdurjs]|Win9: (github)[https://github.com/Win-9]|
 
 ---
 
@@ -56,7 +54,8 @@ Nutt는 객체탐지와 대화형 인공지능을 이용하여 개발한 식단�
 
 ## 상세기능
 
-https://github.com/Win-9/Nutt/assets/80390524/8f602a1b-fae2-49c8-acdc-79682986eabb   
+https://github.com/Mohaeng2023/Mohaeng/assets/80390524/156e8ac9-ddd2-42f2-8779-98cd84646fa4
+
 
 * 해당 웹서비스를 IOS / Android 환경에 따라서 위와같은 방식으로 앱처럼 이용할 수 있습니다.   
 
