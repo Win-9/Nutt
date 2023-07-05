@@ -4,7 +4,7 @@
 
 |Front-End Developer|AI Developer|Back-End Developer|
 |-|-|-|
-|Inhwa Kim: [github](https://github.com/radiantbeing)|MyeongSeok11: [github](https://github.com/MyeongSeok98)<br>dookh99: [https://github.com/dookh99](github),<br>dbsdurjs: [github](https://github.com/dbsdurjs)|Win9: [github](https://github.com/Win-9)|
+|Inhwa Kim: [github](https://github.com/radiantbeing)|MyeongSeok11: [github](https://github.com/MyeongSeok98)<br>dookh99: [github](https://github.com/dookh99),<br>dbsdurjs: [github](https://github.com/dbsdurjs)|Win9: [github](https://github.com/Win-9)|
 
 ---
 
@@ -49,10 +49,10 @@
 
 ## 개요
 
-Nutt는 객체탐지와 대화형 인공지능을 이용하여 개발한 식단관리 웹 입니다.   
-사용자의 신체정보와 활동량, 목표치를 입력받아 이를 토대로 최적의 하루 섭취 칼로리와 영양성분들을 제시합니다.    
-섭취할 음식의 사진을 찍어 음식의 영양성분들을 알아볼 수 있습니다. 또한 이를 기록하여 과거에 얼만큼의 영양소를 섭취했는지 열람할 수 있습니다.   
-식단관리에 대해 모르는것이 있을때는 대화형 인공지능을 이용하여 여러 질문을 할 수 있습니다. 또한 먹은 식단에 대해서 또다른 패드백을 해줍니다.   
+* Nutt는 객체탐지와 대화형 인공지능을 이용하여 개발한 식단관리 웹 입니다.   
+* 사용자의 신체정보와 활동량, 목표치를 입력받아 이를 토대로 최적의 하루 섭취 칼로리와 영양성분들을 제시합니다.    
+* 섭취할 음식의 사진을 찍어 음식의 영양성분들을 알아볼 수 있습니다. 또한 이를 기록하여 과거에 얼만큼의 영양소를 섭취했는지 열람할 수 있습니다.   
+* 식단관리에 대해 모르는것이 있을때는 대화형 인공지능을 이용하여 여러 질문을 할 수 있습니다. 또한 먹은 식단에 대해서 또다른 패드백을 해줍니다.   
 
 ---
 
