@@ -1,10 +1,12 @@
 ## Nutt
 객체탐지와 대화형 인공지능을 이용한 식단관리 웹 앱
+---
 
 |Front-End Developer|AI Developer|Back-End Developer|
 |-|-|-|
-|Inhwa Kim: [https://github.com/radiantbeing]|MyeongSeok11: [https://github.com/MyeongSeok98], dookh99: [https://github.com/dookh99], dbsdurjs: [https://github.com/dbsdurjs]|Win9: [https://github.com/Win-9]|
+|Inhwa Kim: [https://github.com/radiantbeing]|MyeongSeok11: [https://github.com/MyeongSeok98],    dookh99: [https://github.com/dookh99],    dbsdurjs: [https://github.com/dbsdurjs]|Win9: [https://github.com/Win-9]|
 
+---
 
 ## 프로젝트 소개
 * 프로젝트 배경 : 운동 초보자는 쉽지않은 체계적인 식단관리, 식단에서 얼만큼의 영양소와 칼로리가 존재하는지 정보를 모으기 쉽지 않음.
@@ -14,26 +16,26 @@
 
 ### Using
 * AI
-- MobileNet
-- YoLo
-- ChatGPT
+  - MobileNet
+  - YoLo
+  - ChatGPT
 
 * Front-end
-- JavaScript
-- TypeScript
-- CSS
+  - JavaScript
+  - TypeScript
+  - CSS
 
 * Back-end
-- Java
-- SpringBoot
-- SpringData JPA
-- Spring Security
-- MySQL
-- Jenkins
-- JWT
-- AWS S3
-- NCloud
-- Swagger
+  - Java
+  - SpringBoot
+  - SpringData JPA
+  - Spring Security
+  - MySQL
+  - Jenkins
+  - JWT
+  - AWS S3
+  - NCloud
+  - Swagger
 
 
 ### Table
