@@ -1,6 +1,7 @@
 package com.backend.nutt.service;
 
 import com.backend.nutt.domain.Achieve;
+import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.Member;
 import com.backend.nutt.dto.response.TodayIntakeResponse;
 import com.backend.nutt.dto.response.YearMonthMealPlanResponse;
@@ -19,7 +20,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MealPlanService {
     private final MealPlanRepository mealPlanRepository;
-    private final MemberRepository memberRepository;
 
     public YearMonthMealPlanResponse getMealPlanYearMonth(Member member, int year, int month) {
         if (member == null) {
@@ -50,5 +50,17 @@ public class MealPlanService {
 
         return TodayIntakeResponse.build(mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(),
                 LocalDate.now().getYear(), LocalDate.now().getMonthValue()), member.getAchieve());
+    }
+
+    public void deleteMealPlanRecord(Member member, int year, int month, int day) {
+        if (member == null) {
+            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
+        }
+
+        MealPlan mealPlan = mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(), year, month, day).stream()
+                .findAny()
+                .get();
+
+        mealPlanRepository.delete(mealPlan);
     }
 }

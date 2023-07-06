@@ -28,7 +28,7 @@ public class MealPlan extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany(mappedBy = "mealPlan")
+    @OneToMany(mappedBy = "mealPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Intake> intakeList = new ArrayList<>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
