@@ -32,7 +32,7 @@
 
 |Java|SpringBoot|SpringData JPA|Spring Security|MySQL|
 |-|-|-|-|-|
-|[![My Skills](https://skillicons.dev/icons?i=java)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=spring)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=mysql)](https://skillicons.dev)|
+|[![My Skills](https://skillicons.dev/icons?i=java)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=spring)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=mysql)](https://skillicons.dev)| |
 
 |Jenkins|JWT|AWS|NCloud|Swagger|
 |-|-|-|-|-|
@@ -49,6 +49,12 @@
 
 ## 개요
 
+
+https://github.com/Win-9/Nutt/assets/80390524/57a12c29-a8e8-409e-a17e-3be1b6152880
+
+
+
+
 * Nutt는 객체탐지와 대화형 인공지능을 이용하여 개발한 식단관리 웹 입니다.   
 * 사용자의 신체정보와 활동량, 목표치를 입력받아 이를 토대로 최적의 하루 섭취 칼로리와 영양성분들을 제시합니다.    
 * 섭취할 음식의 사진을 찍어 음식의 영양성분들을 알아볼 수 있습니다. 또한 이를 기록하여 과거에 얼만큼의 영양소를 섭취했는지 열람할 수 있습니다.   
@@ -58,6 +64,7 @@
 
 ## 상세기능
 
+
 https://github.com/Mohaeng2023/Mohaeng/assets/80390524/156e8ac9-ddd2-42f2-8779-98cd84646fa4
 
 
@@ -65,6 +72,7 @@ https://github.com/Mohaeng2023/Mohaeng/assets/80390524/156e8ac9-ddd2-42f2-8779-9
 
 
 ### 회원가입
+
 
 https://github.com/Win-9/Nutt/assets/80390524/d1b8a466-df96-4084-89c4-e797955a04a0
 
@@ -79,6 +87,10 @@ https://github.com/Win-9/Nutt/assets/80390524/d1b8a466-df96-4084-89c4-e797955a04
 
 
 
+https://github.com/Win-9/Nutt/assets/80390524/cc78db8c-f61b-4051-bbaf-5c75f5026e03
+
+
+
 * 섭취하려는 식단의 사진을 업로드 합니다.
 * 식단의 음식들을 인식하여 식단이 가진 탄수화물, 단백질, 지방, 칼로리를 분석해서 알려줍니다.
 * 이를 기록하여 저장할 수 있습니다.
@@ -89,6 +101,12 @@ https://github.com/Win-9/Nutt/assets/80390524/d1b8a466-df96-4084-89c4-e797955a04
 
 
 
+
+https://github.com/Win-9/Nutt/assets/80390524/10bb8a9b-10c3-4e41-825c-33666e5ea2b9
+
+
+
+
 * 과거에 기록된 식단을 열람할 수 있습니다.
 * 날짜순으로 정렬됩니다.
 * 날짜에 따라 섭취한 총 정보들을 확인할 수 있습니다.
@@ -96,6 +114,13 @@ https://github.com/Win-9/Nutt/assets/80390524/d1b8a466-df96-4084-89c4-e797955a04
 
 
 ### 챗봇상담
+
+
+
+
+https://github.com/Win-9/Nutt/assets/80390524/a038c159-090b-48dd-b4c8-8cebaf533fde
+
+
 
 
 * 식단에 관한 궁금한 점이 있으면 질문을 통해 알아볼 수 있습니다.
