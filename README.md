@@ -74,7 +74,11 @@ https://github.com/Mohaeng2023/Mohaeng/assets/80390524/156e8ac9-ddd2-42f2-8779-9
 ### 회원가입
 
 
-https://github.com/Win-9/Nutt/assets/80390524/d1b8a466-df96-4084-89c4-e797955a04a0
+
+
+https://github.com/Win-9/Nutt/assets/80390524/f0fe4901-99db-4768-9e26-191a9c40584a
+
+
 
 
 * 이메일과 제시된 비밀번호 양식에 따라서 회원가입을 진행합니다(일치하지 않으면 가입이 불가능합니다).
