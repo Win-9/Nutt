@@ -26,7 +26,7 @@ public class DailyIntakeService {
     private final MealPlanRepository mealPlanRepository;
 
     @Transactional
-    public void saveDailyIntake(Member member, IntakeFormRequest request, String imageUrl) {
+    public MealPlan saveDailyIntake(Member member, IntakeFormRequest request, String imageUrl) {
         if (member == null) {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
@@ -49,6 +49,7 @@ public class DailyIntakeService {
         if (findMealPlan == null) {
             MealPlan mealPlan = MealPlan.builder()
                     .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
+                    .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
                     .imageUrl(imageUrl)
                     .intakeDate(LocalDate.now())
                     .intakeTime(LocalTime.now())
@@ -58,12 +59,14 @@ public class DailyIntakeService {
             mealPlanRepository.save(mealPlan);
 
             intake.setMealPlan(mealPlan);
+            findMealPlan = mealPlan;
 
         } else {
             intake.setMealPlan(findMealPlan);
             mealPlanRepository.save(findMealPlan);
         }
 
+        return findMealPlan;
     }
 
 }
