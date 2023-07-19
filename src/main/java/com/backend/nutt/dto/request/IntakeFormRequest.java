@@ -1,13 +1,16 @@
 package com.backend.nutt.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class IntakeFormRequest {
 
     @NotNull
@@ -37,4 +40,11 @@ public class IntakeFormRequest {
     @NotNull
     @Schema(description = "Base64 Encode Image")
     private String image;
+
+    @JsonFormat(pattern = "yyyy-dd-MM")
+    private String intakeDate;
+
+    @JsonFormat(pattern = "hh:mm")
+    private String intakeTime;
+
 }
