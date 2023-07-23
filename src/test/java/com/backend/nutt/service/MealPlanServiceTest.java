@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,35 @@ class MealPlanServiceTest {
         Assertions.assertThat(response.getDate()).isEqualTo(LocalDate.now());
         Assertions.assertThat(response.getMealData().size()).isEqualTo(1);
 
+    }
+
+    @Test
+    @DisplayName("식단 년, 월, 일 검색 삭제 테스트")
+    public void deleteMealPlanRecordTest() {
+        //given
+        int year = LocalDateTime.now().getYear();
+        int month = LocalDateTime.now().getMonthValue();
+        int day = LocalDateTime.now().getDayOfMonth();
+
+        Member member = generateMember();
+        MealPlan mealPlan = MealPlan.builder()
+                .id(1L)
+                .member(member)
+                .intakeDate(LocalDate.now())
+                .intakeTime(LocalTime.now())
+                .intakeList(new ArrayList<>())
+                .build();
+        List<MealPlan> list = List.of(mealPlan);
+
+        when(mealPlanRepository.findByMemberIdAndIntakeDate(member.getId(), year, month, day))
+                .thenReturn(list);
+
+        //when
+        mealPlanService.deleteMealPlanRecord(member, year, month, day);
+
+        //then
+        verify(mealPlanRepository, times(1)).findByMemberIdAndIntakeDate(member.getId(), year, month, day);
+        Assertions.assertThat(mealPlanRepository.findById(1L)).isEmpty();
     }
 
 
