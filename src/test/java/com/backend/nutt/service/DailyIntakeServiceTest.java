@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.ArgumentMatchers.*;
 
-@SpringBootTest
+//@SpringBootTest
 class DailyIntakeServiceTest {
 
     @Mock
