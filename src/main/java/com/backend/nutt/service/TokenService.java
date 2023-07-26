@@ -26,7 +26,7 @@ public class TokenService {
     private final MemberDetailService memberDetailService;
 
     @Value("${jwt.secret-key}")
-    private final String secretKey = "NUTTNUTTNUTTNUTSSSSEEECCCRRREEETTKKKEEYYNNUTNUUT";
+    private String secretKey;
     private static Key key;
     private final long ACCESS_PERIOD = 1000 * 60 * 60 * 24 * 7L;
     private final long REFRESH_PERIOD = 1000 * 60 * 60 * 24 * 14L;
