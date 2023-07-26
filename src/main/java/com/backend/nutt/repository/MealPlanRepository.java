@@ -23,4 +23,11 @@ public interface MealPlanRepository extends JpaRepository<MealPlan, Long> {
 
     @Query("SELECT m FROM MealPlan m WHERE YEAR(m.intakeDate) = :year ORDER BY m.intakeDate ASC")
     List<MealPlan> findByIntakeDateYearOrderByIntakeDateAsc(@Param("year") int year);
+
+    @Query("SELECT m FROM MealPlan m " +
+            "WHERE m.member.id = :id " +
+            "AND YEAR(m.intakeDate) = :year " +
+            "AND MONTH(m.intakeDate) = :month " +
+            "AND DAY (m.intakeDate) = :day")
+    List<MealPlan> findByMemberIdAndIntakeDate(@Param("id") long id, @Param("year") int year, @Param("month") int month, @Param("day") int day);
 }

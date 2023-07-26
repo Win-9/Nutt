@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,8 +44,22 @@ public class MealPlanController {
 
     @PostMapping(value = "/record-intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "섭취기록", description = "일일 섭취량을 기록한다.")
-    public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest
-                                          , /*@RequestPart(value = "imageFile") MultipartFile multipartFile,*/ BindingResult result) throws IOException {
+    public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest,
+                                          BindingResult result) throws IOException {
+        if (result.hasErrors()) {
+            throw new FieldNotBindingException(NOT_VALID_INFO);
+        }
+
+        String imageName = s3Service.upload(intakeFormRequest.getImage());
+        log.info("file = {}", imageName);
+        dailyIntakeService.saveDailyIntake(member, intakeFormRequest, imageName);
+        return ResponseEntity.ok().body(BaseResponse.success());
+    }
+
+    @PostMapping(value = "/sample/record-intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @Operation(summary = "(샘플데이터기록용)섭취기록", description = "일일 섭취량을 기록한다.")
+    public ResponseEntity saveTestDataIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest,
+                                          BindingResult result) throws IOException {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
@@ -86,6 +101,13 @@ public class MealPlanController {
     public ResponseEntity getTodayIntakeRecord(@AuthenticationPrincipal Member member) {
         TodayIntakeResponse response = mealPlanService.getTodayIntake(member);
         return ResponseEntity.ok().body(BaseResponse.success(response));
+    }
+
+    @DeleteMapping("/delete/date/{year}/{month}/{day}")
+    public ResponseEntity deleteIntakeRecord(@AuthenticationPrincipal Member member,
+                                             @PathVariable int year, @PathVariable int month, @PathVariable int day) {
+        mealPlanService.deleteMealPlanRecord(member, year, month, day);
+        return ResponseEntity.ok().body(BaseResponse.success());
     }
 
 }

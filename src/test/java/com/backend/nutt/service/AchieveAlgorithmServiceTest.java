@@ -9,9 +9,9 @@ import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.request.MemberBodyInfoRequest;
 import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.repository.AchieveRepository;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
