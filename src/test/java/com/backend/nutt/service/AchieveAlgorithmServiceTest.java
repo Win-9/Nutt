@@ -9,9 +9,9 @@ import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.request.MemberBodyInfoRequest;
 import com.backend.nutt.dto.response.DailyAchieveResponse;
 import com.backend.nutt.repository.AchieveRepository;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,10 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class AchieveAlgorithmServiceTest {
 
     @Autowired
-    private AchieveRepository achieveRepository;
-
-    @Autowired
     private AchieveService achieveService;
+
 
     @Test
     @DisplayName("[남성, loss, PAL: 1.4] 하루 필요한 열량과 영양정보 일치 테스트")
@@ -40,10 +38,10 @@ class AchieveAlgorithmServiceTest {
         DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), Math.round(dailyTargetKcal * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyFat(), Math.round((dailyTargetKcal * 0.20) / 9 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), Math.round((dailyTargetKcal * 0.45) / 4 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyProtein(), Math.round((dailyTargetKcal * 0.35) / 4 * 10.0) / 10.0);
 //        System.out.println("response = " + response.getAchieveKcal());
 //        System.out.println("fat = " + response.getAchieveFat());
 //        System.out.println("protein = " + response.getAchieveProtein());
@@ -66,10 +64,10 @@ class AchieveAlgorithmServiceTest {
         DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), Math.round(dailyTargetKcal * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyFat(), Math.round((dailyTargetKcal * 0.20) / 9 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), Math.round((dailyTargetKcal * 0.45) / 4 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyProtein(), Math.round((dailyTargetKcal * 0.35) / 4 * 10.0) / 10.0);
     }
 
     @Test
@@ -88,10 +86,10 @@ class AchieveAlgorithmServiceTest {
         DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), Math.round(dailyTargetKcal * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyFat(), Math.round((dailyTargetKcal * 0.20) / 9 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), Math.round((dailyTargetKcal * 0.45) / 4 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyProtein(), Math.round((dailyTargetKcal * 0.35) / 4 * 10.0) / 10.0);
     }
 
     @Test
@@ -110,10 +108,10 @@ class AchieveAlgorithmServiceTest {
         DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), Math.round(dailyTargetKcal * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyFat(), Math.round((dailyTargetKcal * 0.20) / 9 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), Math.round((dailyTargetKcal * 0.45) / 4 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyProtein(), Math.round((dailyTargetKcal * 0.35) / 4 * 10.0) / 10.0);
     }
 
     @Test
@@ -132,10 +130,10 @@ class AchieveAlgorithmServiceTest {
         DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), Math.round(dailyTargetKcal * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyFat(), Math.round((dailyTargetKcal * 0.20) / 9 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), Math.round((dailyTargetKcal * 0.45) / 4 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyProtein(), Math.round((dailyTargetKcal * 0.35) / 4 * 10.0) / 10.0);
     }
 
     @Test
@@ -154,10 +152,10 @@ class AchieveAlgorithmServiceTest {
         DailyAchieveResponse response = achieveService.calculateKcal(request);
 
         //then
-        Assertions.assertEquals(response.getDailyKcal(), dailyTargetKcal);
-        Assertions.assertEquals(response.getDailyFat(), (dailyTargetKcal * 0.20) / 9);
-        Assertions.assertEquals(response.getDailyCarbohydrate(), (dailyTargetKcal * 0.45) / 4);
-        Assertions.assertEquals(response.getDailyProtein(), (dailyTargetKcal * 0.35) / 4);
+        Assertions.assertEquals(response.getDailyKcal(), Math.round(dailyTargetKcal * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyFat(), Math.round((dailyTargetKcal * 0.20) / 9 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyCarbohydrate(), Math.round((dailyTargetKcal * 0.45) / 4 * 10.0) / 10.0);
+        Assertions.assertEquals(response.getDailyProtein(), Math.round((dailyTargetKcal * 0.35) / 4 * 10.0) / 10.0);
     }
 
     private double getBmr(Member member, String gender) {
