@@ -1,6 +1,8 @@
 package com.backend.nutt.service;
 
+import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
+import com.backend.nutt.domain.type.Gender;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
@@ -14,19 +16,26 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.BDDMockito.*;
+
 
 //@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 
-    @Autowired
+    @Mock
     private MemberRepository memberRepository;
-    @Autowired
+    @InjectMocks
     private MemberService memberService;
 
     @AfterEach
@@ -41,13 +50,14 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "qwert1234!", "testName",
-                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
+                "MALE", 170.5, 40.5, 0.1, 0.1, 0.1, 0.1);
+        Member member = generateMember("qwert1234!");
+        when(memberRepository.save(any())).thenReturn(member);
 
         //when
         memberService.saveMember(formSignUpRequest, any());
 
         //then
-        Member member = memberRepository.findByEmail("kim@naver.com").get();
         Assertions.assertEquals(member.getName(), "testName");
         Assertions.assertEquals(member.getHeight(), 170.5);
         Assertions.assertEquals(member.getWeight(), 40.5);
@@ -61,10 +71,11 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "abcd", "testName",
-                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
+                "MALE", 170.5, 40.5, 0.1, 0.1, 0.1, 0.1);
+
         //when
         PasswordNotValid exception = assertThrows(PasswordNotValid.class,
-                () -> memberService.saveMember(formSignUpRequest, any()));
+                () -> memberService.saveMember(formSignUpRequest, Achieve.builder().build()));
 
         Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.NOT_VALID_PASSWORD);
     }
@@ -73,21 +84,17 @@ class MemberServiceTest {
     @DisplayName(value = "멤버 로그인 테스트")
     public void loginMemberTest() {
         //given
-        FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
-                "kim@naver.com", 10,
-                "qwert1234!", "testName",
-                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
-        Member saveMember = memberService.saveMember(formSignUpRequest, any());
+        Member member = generateMember("qwert1234!");
         FormLoginUserRequest request = new FormLoginUserRequest("kim@naver.com", "qwert1234!");
+        when(memberRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(member));
 
         //when
-        Member member = memberService.loginMember(request);
+        memberService.loginMember(request);
 
         //then
-        Assertions.assertEquals(member.getName(), saveMember.getName());
-        Assertions.assertEquals(member.getHeight(), saveMember.getHeight());
-        Assertions.assertEquals(member.getWeight(), saveMember.getWeight());
-        Assertions.assertEquals(member.getEmail(), saveMember.getEmail());
+        Assertions.assertEquals(member.getName(), "testName");
+        Assertions.assertEquals(member.getEmail(), request.getEmail());
+        Assertions.assertEquals(member.getPassword(), "qwert1234!");
     }
 
     @Test
@@ -97,8 +104,9 @@ class MemberServiceTest {
         FormSignUpRequest formSignUpRequest = new FormSignUpRequest(
                 "kim@naver.com", 10,
                 "qwert1234!", "testName",
-                "MALE", 170.5, 40.5, anyDouble(), anyDouble(), anyDouble(), anyDouble());
-        Member member = memberService.saveMember(formSignUpRequest, any());
+                "MALE", 170.5, 40.5, 0.1, 0.1, 0.1, 0.1);
+        Member member = generateMember("qwert1234!");
+        when(memberRepository.findByEmail(member.getEmail())).thenReturn(Optional.of(member));
 
         //when
         LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);
@@ -121,6 +129,9 @@ class MemberServiceTest {
                 .height(170.5)
                 .weight(40.5)
                 .build();
+
+        when(memberRepository.findByEmail(member.getEmail())).thenThrow(new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
+
         //when
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> memberService.getLoginMemberInfo(member));
@@ -136,6 +147,7 @@ class MemberServiceTest {
         FormLoginUserRequest request = new FormLoginUserRequest(
                 "test@naver.com",
                 "asdfzx123!");
+        when(memberRepository.findByEmail(request.getEmail())).thenThrow(new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
 
         //when
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
@@ -149,25 +161,25 @@ class MemberServiceTest {
     @DisplayName(value = "존재하는 사용자 회원가입 방지 테스트")
     public void ExistMemberSignUpExceptionTest() {
         //given
-        FormSignUpRequest firstRequest = new FormSignUpRequest(
-                "test@naver.com",
+        FormSignUpRequest request = new FormSignUpRequest(
+                "kim@naver.com",
                 10,
                 "abcdefg1234!",
-                "Kim",
+                "testName",
                 "MALE",
                 170.5,
                 45.1,
-                anyDouble(),
-                anyDouble(),
-                anyDouble(),
-                anyDouble()
+                0.1,
+                0.1,
+                0.1,
+                0.1
         );
 
-        memberService.saveMember(firstRequest, any());
+        when(memberRepository.existsMemberByEmail(request.getEmail())).thenReturn(true);
 
         //when
         ExistMemberException exception = assertThrows(ExistMemberException.class,
-                () -> memberService.saveMember(firstRequest, any()));
+                () -> memberService.saveMember(request, any()));
 
         //then
         Assertions.assertEquals(exception.getErrorMessage(), ErrorMessage.EXIST_MEMBER);
@@ -177,23 +189,24 @@ class MemberServiceTest {
     @DisplayName(value = "비밀번호 불일치 예외 테스트")
     public void PasswordNotMatchExceptionTest() {
         //given
-        FormSignUpRequest firstRequest = new FormSignUpRequest(
+        FormSignUpRequest request = new FormSignUpRequest(
                 "test@naver.com",
                 10,
                 "abcdefg1234!",
-                "Kim",
+                "testName",
                 "MALE",
                 170.5,
                 45.1,
-                anyDouble(),
-                anyDouble(),
-                anyDouble(),
-                anyDouble()
+                0.1,
+                0.1,
+                0.1,
+                0.1
         );
 
-        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "aaaaaaaa12!");
+        Member member = generateMember("abcdefg1234!");
 
-        memberService.saveMember(firstRequest, any());
+        when(memberRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(member));
+        FormLoginUserRequest loginRequest = new FormLoginUserRequest("test@naver.com", "aaaaaaaa12!");
 
         //when
         PasswordNotMatchException exception = assertThrows(PasswordNotMatchException.class,
@@ -241,5 +254,16 @@ class MemberServiceTest {
         Assertions.assertFalse(memberService.isPasswordValid(twelfthCase));
         Assertions.assertFalse(memberService.isPasswordValid(thirteenthCase));
 
+    }
+    private Member generateMember(String password) {
+        return Member.builder()
+                .email("kim@naver.com")
+                .name("testName")
+                .gender(Gender.MALE)
+                .age(10)
+                .password(password)
+                .height(170.5)
+                .weight(40.5)
+                .build();
     }
 }
