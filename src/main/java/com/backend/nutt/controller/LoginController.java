@@ -71,11 +71,12 @@ public class LoginController {
             @ApiResponse(responseCode = "200", description = "응답 성공", content =
             @Content(schema = @Schema(name = "ok"))),
     })
-    @PostMapping("/email-check")
+    @PostMapping("/users/email-check")
     public ResponseEntity emailDuplicatedCheckController(@RequestBody @Validated EmailCheckRequest request, BindingResult result) {
         if (result.hasErrors()) {
             throw new FieldNotBindingException(NOT_VALID_INFO);
         }
+
         memberService.checkByEmail(request.getEmail());
         email = request.getEmail();
         return ResponseEntity.ok().body(BaseResponse.success(request.getEmail()));
@@ -106,7 +107,7 @@ public class LoginController {
             @ApiResponse(responseCode = "400", description = "사용자를 찾지 못하는 오류", content =
             @Content(schema = @Schema(implementation = UserException.class)))
     })
-    @GetMapping("/loginInfo")
+    @GetMapping("/users/info")
     public ResponseEntity loginInfoController(@AuthenticationPrincipal Member member) {
         LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);
         return ResponseEntity.ok().body(BaseResponse.success(loginMemberInfo));
