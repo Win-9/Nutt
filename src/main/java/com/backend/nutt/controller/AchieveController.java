@@ -33,10 +33,6 @@ public class AchieveController {
             throw new FieldNotBindingException(ErrorMessage.NOT_VALID_INFO);
         }
 
-//        if (member == null) {
-//            throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
-//        }
-
         DailyAchieveResponse dailyAchieveResponse = achieveService.calculateKcal(request);
         return ResponseEntity.ok().body(BaseResponse.success(dailyAchieveResponse));
     }

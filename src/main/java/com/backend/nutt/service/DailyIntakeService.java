@@ -31,15 +31,7 @@ public class DailyIntakeService {
             throw new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER);
         }
 
-        Intake intake = Intake.builder()
-                .intakeFoodName(request.getFoodName())
-                .intakeKcal(request.getIntakeKcal())
-                .intakeCarbohydrate(request.getIntakeCarbohydrate())
-                .intakeProtein(request.getIntakeProtein())
-                .intakeFat(request.getIntakeFat())
-                .intakeDate(LocalDate.now())            // 업로드시의 날짜
-                .intakeTime(LocalTime.now())            // 업로드시의 시간
-                .build();
+        Intake intake = createIntake(request);
         intakeRepository.save(intake);
 
         // 식단 세팅후 저장
@@ -47,14 +39,7 @@ public class DailyIntakeService {
                 LocalDate.now().getMonthValue(), IntakeTitle.valueOf(request.getIntakeTitle()));
 
         if (findMealPlan == null) {
-            MealPlan mealPlan = MealPlan.builder()
-                    .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
-                    .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
-                    .imageUrl(imageUrl)
-                    .intakeDate(LocalDate.now())
-                    .intakeTime(LocalTime.now())
-                    .intakeList(new ArrayList<>())
-                    .build();
+            MealPlan mealPlan = createMealPlan(request, imageUrl);
             mealPlan.setMember(member);
             mealPlanRepository.save(mealPlan);
 
@@ -67,6 +52,31 @@ public class DailyIntakeService {
         }
 
         return findMealPlan;
+    }
+
+    private MealPlan createMealPlan(IntakeFormRequest request, String imageUrl) {
+        MealPlan mealPlan = MealPlan.builder()
+                .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
+                .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
+                .imageUrl(imageUrl)
+                .intakeDate(LocalDate.now())
+                .intakeTime(LocalTime.now())
+                .intakeList(new ArrayList<>())
+                .build();
+        return mealPlan;
+    }
+
+    private Intake createIntake(IntakeFormRequest request) {
+        Intake intake = Intake.builder()
+                .intakeFoodName(request.getFoodName())
+                .intakeKcal(request.getIntakeKcal())
+                .intakeCarbohydrate(request.getIntakeCarbohydrate())
+                .intakeProtein(request.getIntakeProtein())
+                .intakeFat(request.getIntakeFat())
+                .intakeDate(LocalDate.now())            // 업로드시의 날짜
+                .intakeTime(LocalTime.now())            // 업로드시의 시간
+                .build();
+        return intake;
     }
 
 }

@@ -29,6 +29,12 @@ public class MemberService {
             throw  new ExistMemberException(ErrorMessage.EXIST_MEMBER);
         }
 
+        Member member = createMember(formSignUpRequest, achieve);
+
+        return memberRepository.save(member);
+    }
+
+    private Member createMember(FormSignUpRequest formSignUpRequest, Achieve achieve) {
         Member member = Member.builder()
                 .name(formSignUpRequest.getName())
                 .email(formSignUpRequest.getEmail())
@@ -42,7 +48,7 @@ public class MemberService {
                 .achieve(achieve)
                 .build();
 
-        return memberRepository.save(member);
+        return member;
     }
 
     private boolean isMember(FormSignUpRequest formSignUpRequest) {
