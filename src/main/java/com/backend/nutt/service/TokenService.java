@@ -2,6 +2,7 @@ package com.backend.nutt.service;
 import com.backend.nutt.domain.RefreshToken;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.ErrorMessage;
+import com.backend.nutt.exception.badrequest.TokenNotMatchException;
 import com.backend.nutt.exception.unavailable.TokenExpiredException;
 import com.backend.nutt.repository.AccessTokenRepository;
 import com.backend.nutt.repository.RefreshTokenRepository;
@@ -41,24 +42,8 @@ public class TokenService {
     }
 
     public Token generateToken(String email, String name) {
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("name", name);
-
-        Date nowDate = new Date();
-
-        String accessToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(nowDate)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .setExpiration(new Date(nowDate.getTime() + ACCESS_PERIOD))
-                .compact();
-
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(nowDate)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .setExpiration(new Date(nowDate.getTime() + REFRESH_PERIOD))
-                .compact();
+        String accessToken = generateAccessToken(email, name);
+        String refreshToken = generateRefreshToken(email, name);
 
         saveRefreshToken(email, refreshToken);
 
@@ -68,7 +53,7 @@ public class TokenService {
                 .build();
     }
 
-    public String generateAccessToken(String email, String name) {
+    private String generateAccessToken(String email, String name) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("name", name);
         Date nowDate = new Date();
@@ -125,5 +110,50 @@ public class TokenService {
         RefreshToken token = new RefreshToken(email, refreshToken, REFRESH_PERIOD);
 
         return refreshTokenRepository.save(token);
+    }
+
+    private long getRemainSeconds(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        Date expiration = claims.getExpiration();
+        Date now = new Date();
+
+        return expiration.getTime() - now.getTime();
+    }
+
+    public Token reissueToken(String refreshToken, String name) {
+        String email = parseEmailFromToken(refreshToken);
+        RefreshToken token = refreshTokenRepository.findById(email)
+                .orElseThrow(() -> new TokenNotMatchException(ErrorMessage.NOT_EXIST_TOKEN));
+
+        if (token.getRefreshToken() == refreshToken) {
+            return reissueTokens(refreshToken, name, email);
+        }
+
+        throw new TokenNotMatchException(ErrorMessage.NOT_MATCH_TOKEN);
+    }
+
+    private Token reissueTokens(String refreshToken, String name, String email) {
+        String accessToken = generateAccessToken(email, name);
+        if (lessThanReissueExpirationTimesLeft(refreshToken)) {
+            String otherRefreshToken = generateRefreshToken(email, name);
+
+            return Token.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(otherRefreshToken)
+                    .build();
+        }
+
+        return Token.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    private boolean lessThanReissueExpirationTimesLeft(String refreshToken) {
+        return getRemainSeconds(refreshToken) < REFRESH_PERIOD;
     }
 }
