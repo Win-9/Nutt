@@ -1,7 +1,10 @@
 package com.backend.nutt.service;
+import com.backend.nutt.domain.RefreshToken;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.unavailable.TokenExpiredException;
+import com.backend.nutt.repository.AccessTokenRepository;
+import com.backend.nutt.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,6 +27,8 @@ import java.util.Optional;
 public class TokenService {
 
     private final MemberDetailService memberDetailService;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final AccessTokenRepository accessTokenRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -41,19 +46,52 @@ public class TokenService {
 
         Date nowDate = new Date();
 
+        String accessToken = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(nowDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(nowDate.getTime() + ACCESS_PERIOD))
+                .compact();
+
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(nowDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(nowDate.getTime() + REFRESH_PERIOD))
+                .compact();
+
+        saveRefreshToken(email, refreshToken);
+
         return Token.builder()
-                .accessToken(Jwts.builder()
-                        .setClaims(claims)
-                        .setIssuedAt(nowDate)
-                        .signWith(key, SignatureAlgorithm.HS256)
-                        .setExpiration(new Date(nowDate.getTime() + ACCESS_PERIOD))
-                        .compact())
-                .refreshToken(Jwts.builder()
-                        .setClaims(claims)
-                        .setIssuedAt(nowDate)
-                        .signWith(key, SignatureAlgorithm.HS256)
-                        .setExpiration(new Date(nowDate.getTime() + REFRESH_PERIOD))
-                        .compact()).build();
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public String generateAccessToken(String email, String name) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("name", name);
+        Date nowDate = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(nowDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(nowDate.getTime() + ACCESS_PERIOD))
+                .compact();
+    }
+
+    private String generateRefreshToken(String email, String name) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("name", name);
+        Date nowDate = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(nowDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(nowDate.getTime() + REFRESH_PERIOD))
+                .compact();
     }
 
     public Authentication getAuthentication(String accessToken) {
@@ -81,5 +119,11 @@ public class TokenService {
         return Optional.ofNullable(body.getExpiration())
                 .map(expiration -> expiration.after(new Date()))
                 .orElseThrow(() -> new TokenExpiredException(ErrorMessage.ACCESS_TOKEN_EXPIRED));
+    }
+
+    public RefreshToken saveRefreshToken(String email, String refreshToken) {
+        RefreshToken token = new RefreshToken(email, refreshToken, REFRESH_PERIOD);
+
+        return refreshTokenRepository.save(token);
     }
 }

@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RefreshToken {
     @Id
-    private String id;
-    private Member member;
+    private String id;  // 사용자 email
+    private String refreshToken;
 
     @TimeToLive
     private Long expiration;

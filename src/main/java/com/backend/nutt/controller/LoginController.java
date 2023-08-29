@@ -3,6 +3,7 @@ package com.backend.nutt.controller;
 import com.backend.nutt.common.BaseResponse;
 import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
+import com.backend.nutt.domain.RefreshToken;
 import com.backend.nutt.dto.request.EmailCheckRequest;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
 import com.backend.nutt.dto.request.FormSignUpRequest;
@@ -95,7 +96,7 @@ public class LoginController {
         }
 
         Member member = memberService.loginMember(loginUserRequest);
-        Token token = tokenService.generateToken(member.getEmail(), member.getRole().getKey());
+        Token token = tokenService.generateToken(member.getEmail(), member.getName());
         return ResponseEntity.ok().body(BaseResponse.success(token));
     }
 
@@ -111,6 +112,7 @@ public class LoginController {
         LoginUserInfoResponse loginMemberInfo = memberService.getLoginMemberInfo(member);
         return ResponseEntity.ok().body(BaseResponse.success(loginMemberInfo));
     }
+
 
 
 }
