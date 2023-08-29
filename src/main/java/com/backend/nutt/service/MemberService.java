@@ -83,4 +83,9 @@ public class MemberService {
         return password.matches("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#]).{8,20}$");
     }
 
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
+    }
+
 }
