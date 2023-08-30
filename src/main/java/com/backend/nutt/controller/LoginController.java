@@ -11,6 +11,7 @@ import com.backend.nutt.dto.response.FormSignUpResponse;
 import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.badrequest.FieldNotBindingException;
+import com.backend.nutt.exception.badrequest.TokenNotMatchException;
 import com.backend.nutt.exception.notfound.UserException;
 import com.backend.nutt.service.AchieveService;
 import com.backend.nutt.service.MemberService;
@@ -113,6 +114,18 @@ public class LoginController {
         return ResponseEntity.ok().body(BaseResponse.success(loginMemberInfo));
     }
 
+    @PostMapping("/reissue")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공", content =
+            @Content(schema = @Schema(implementation = Token.class))),
+            @ApiResponse(responseCode = "400", description = "토큰과 관련한 오류", content =
+            @Content(schema = @Schema(implementation = TokenNotMatchException.class)))
+    })
+    public ResponseEntity reissue(@RequestHeader("refreshToken") String refreshToken) {
+        Member member = memberService.findMemberByEmail(email);
+        Token token = tokenService.reissueToken(refreshToken, member.getName());
+        return ResponseEntity.ok().body(BaseResponse.success(token));
+    }
 
 
 }
