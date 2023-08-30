@@ -13,10 +13,6 @@ import org.springframework.data.redis.core.TimeToLive;
 @AllArgsConstructor
 public class AccessToken {
     @Id
-    private String id;
-    private Member member;
-
-    @TimeToLive
-    private Long expiration;
-
+    private String id;  // 사용자 email
+    private String accessToken;
 }
