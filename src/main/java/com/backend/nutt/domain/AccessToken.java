@@ -13,6 +13,6 @@ import org.springframework.data.redis.core.TimeToLive;
 @AllArgsConstructor
 public class AccessToken {
     @Id
-    private String id;  // 사용자 email
     private String accessToken;
+    private String id;  // 사용자 email
 }

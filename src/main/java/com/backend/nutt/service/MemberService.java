@@ -100,7 +100,7 @@ public class MemberService {
             refreshTokenRepository.deleteById(email);
         }
 
-        AccessToken deleteAccessToken = new AccessToken(email, accessToken);
+        AccessToken deleteAccessToken = new AccessToken(accessToken, email);
         accessTokenRepository.save(deleteAccessToken);
     }
 }
