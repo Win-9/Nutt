@@ -127,5 +127,12 @@ public class LoginController {
         return ResponseEntity.ok().body(BaseResponse.success(token));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity logout(@RequestHeader("accessToken") String accessToken) {
+        String email = tokenService.parseEmailFromToken(accessToken);
+        memberService.logout(accessToken, email);
+        return ResponseEntity.ok().body(BaseResponse.success());
+    }
+
 
 }
