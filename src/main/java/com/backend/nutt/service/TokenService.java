@@ -1,4 +1,5 @@
 package com.backend.nutt.service;
+import com.backend.nutt.domain.AccessToken;
 import com.backend.nutt.domain.RefreshToken;
 import com.backend.nutt.dto.response.Token;
 import com.backend.nutt.exception.ErrorMessage;
@@ -155,5 +156,10 @@ public class TokenService {
 
     private boolean lessThanReissueExpirationTimesLeft(String refreshToken) {
         return getRemainSeconds(refreshToken) < REFRESH_PERIOD;
+    }
+
+    public AccessToken findAccessToken(String accessToken) {
+        return accessTokenRepository.findById(accessToken)
+                .orElse(null);
     }
 }
