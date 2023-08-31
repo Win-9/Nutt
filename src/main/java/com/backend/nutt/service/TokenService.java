@@ -35,8 +35,10 @@ public class TokenService {
     @Value("${jwt.secret-key}")
     private String secretKey;
     private static Key key;
-    private final long ACCESS_PERIOD = 1000 * 60 * 60 * 24 * 7L;
-    private final long REFRESH_PERIOD = 1000 * 60 * 60 * 24 * 14L;
+    @Value("${jwt.live.atk}")
+    private final long ACCESS_PERIOD;
+    @Value("${jwt.live.rtk}")
+    private final long REFRESH_PERIOD;
     @PostConstruct
     private void setUPEncodeKey() {
         key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
