@@ -49,7 +49,7 @@ public class FoodInfoApiController {
             "D000385", "D000385", "D018480", "D018467", "D018163", "D000304", "D000475", "D018547",
             "D018116", "D018111", "D000016", "D018018", "D018180", "D000167", "P036993");
 
-    @GetMapping("/foodInfo/search")
+    @GetMapping("/searchFood")
     @Operation(summary = "기타 음식 정보 제공", description = "10가지 음식 외의 다른 음식에 대한 정보를 찾아와서 성분을 제공합니다.")
     public String searchByFoodNameController(@RequestParam String food) throws IOException {
         StringBuilder result = new StringBuilder();
@@ -80,7 +80,7 @@ public class FoodInfoApiController {
         return jsonObject.toString();
     }
 
-    @GetMapping("/foodInfo/food")
+    @GetMapping("/saveFood")
     @Operation(summary = "(프론트엔드 사용 금지) 10가지의 음식정보 파싱 저장", description = "객체 탐지후 영양정보를 얻어올 음식에 대한 정보 10가지를 파싱 후 저장합니다.")
     public ResponseEntity foodSave() throws IOException {
 
