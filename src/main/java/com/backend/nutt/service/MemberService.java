@@ -1,7 +1,9 @@
 package com.backend.nutt.service;
 
+import com.backend.nutt.domain.AccessToken;
 import com.backend.nutt.domain.Achieve;
 import com.backend.nutt.domain.Member;
+import com.backend.nutt.domain.RefreshToken;
 import com.backend.nutt.domain.type.Gender;
 import com.backend.nutt.domain.type.Role;
 import com.backend.nutt.dto.request.FormLoginUserRequest;
@@ -10,7 +12,9 @@ import com.backend.nutt.dto.response.LoginUserInfoResponse;
 import com.backend.nutt.exception.ErrorMessage;
 import com.backend.nutt.exception.badrequest.*;
 import com.backend.nutt.exception.notfound.UserNotFoundException;
+import com.backend.nutt.repository.AccessTokenRepository;
 import com.backend.nutt.repository.MemberRepository;
+import com.backend.nutt.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final AccessTokenRepository accessTokenRepository;
 
     public Member saveMember(FormSignUpRequest formSignUpRequest, Achieve achieve) {
         if (!isPasswordValid(formSignUpRequest.getPassword())) {
@@ -89,4 +95,18 @@ public class MemberService {
         return password.matches("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#]).{8,20}$");
     }
 
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
+    }
+
+    public void logout(String accessToken, String email) {
+        RefreshToken refreshToken = refreshTokenRepository.findById(email).get();
+        if (refreshToken != null) {
+            refreshTokenRepository.deleteById(email);
+        }
+
+        AccessToken deleteAccessToken = new AccessToken(accessToken, email);
+        accessTokenRepository.save(deleteAccessToken);
+    }
 }
