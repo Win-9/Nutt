@@ -16,6 +16,7 @@ import com.backend.nutt.repository.AccessTokenRepository;
 import com.backend.nutt.repository.MemberRepository;
 import com.backend.nutt.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -25,6 +26,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AccessTokenRepository accessTokenRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Member saveMember(FormSignUpRequest formSignUpRequest, Achieve achieve) {
         if (!isPasswordValid(formSignUpRequest.getPassword())) {
@@ -44,7 +46,7 @@ public class MemberService {
         Member member = Member.builder()
                 .name(formSignUpRequest.getName())
                 .email(formSignUpRequest.getEmail())
-                .password(formSignUpRequest.getPassword())
+                .password(bCryptPasswordEncoder.encode(formSignUpRequest.getPassword()))
                 .age(formSignUpRequest.getAge())
                 .gender(Gender.valueOf(formSignUpRequest.getGender()))
                 .role(Role.NORMAL)
@@ -72,17 +74,23 @@ public class MemberService {
     }
 
     public Member loginMember(FormLoginUserRequest formLoginUserRequest) {
-        if (!isPasswordValid(formLoginUserRequest.getPassword())) {
+        Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
+
+        if (!isPasswordValid(formLoginUserRequest.getPassword())
+                && isPasswordMatch(findMember)) {
             throw new PasswordNotValid(ErrorMessage.NOT_VALID_PASSWORD);
         }
 
-        Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
 
         if (!(formLoginUserRequest.getPassword()).equals(findMember.getPassword())) {
             throw new PasswordNotMatchException(ErrorMessage.NOT_MATCH_PASSWORD);
         }
         return findMember;
+    }
+
+    private boolean isPasswordMatch(Member findMember) {
+        return bCryptPasswordEncoder.matches(findMember.getPassword(), findMember.getPassword());
     }
 
     public LoginUserInfoResponse getLoginMemberInfo(Member member) {
