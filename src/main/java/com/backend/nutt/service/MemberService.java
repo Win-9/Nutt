@@ -77,20 +77,20 @@ public class MemberService {
         Member findMember = memberRepository.findByEmail(formLoginUserRequest.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.NOT_EXIST_MEMBER));
 
-        if (!isPasswordValid(formLoginUserRequest.getPassword())
-                && isPasswordMatch(findMember)) {
+        if (!isPasswordValid(formLoginUserRequest.getPassword())) {
             throw new PasswordNotValid(ErrorMessage.NOT_VALID_PASSWORD);
         }
 
 
-        if (!(formLoginUserRequest.getPassword()).equals(findMember.getPassword())) {
+        if (!isPasswordMatch(formLoginUserRequest.getPassword(), findMember)) {
             throw new PasswordNotMatchException(ErrorMessage.NOT_MATCH_PASSWORD);
         }
+
         return findMember;
     }
 
-    private boolean isPasswordMatch(Member findMember) {
-        return bCryptPasswordEncoder.matches(findMember.getPassword(), findMember.getPassword());
+    private boolean isPasswordMatch(String typedPassword, Member findMember) {
+        return bCryptPasswordEncoder.matches(typedPassword, findMember.getPassword());
     }
 
     public LoginUserInfoResponse getLoginMemberInfo(Member member) {
