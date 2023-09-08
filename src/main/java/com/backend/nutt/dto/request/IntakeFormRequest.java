@@ -41,11 +41,4 @@ public class IntakeFormRequest {
     @Nullable
     @Schema(description = "Base64 Encode Image")
     private String image;
-
-    @JsonFormat(pattern = "yyyy-dd-MM")
-    private String intakeDate;
-
-    @JsonFormat(pattern = "hh:mm")
-    private String intakeTime;
-
 }
