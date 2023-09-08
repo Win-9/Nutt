@@ -37,6 +37,10 @@ public class S3Service {
     }
 
     public String upload(String image) throws IOException {
+        if (image == null) {
+            return "Null Image";
+        }
+
         String encodedCode = image.substring(image.indexOf(",") + 1);
         //이미지 정보 파싱
         String imageExtension = image.substring(image.indexOf("/") + 1, image.indexOf(";"));

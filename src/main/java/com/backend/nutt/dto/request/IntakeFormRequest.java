@@ -2,6 +2,7 @@ package com.backend.nutt.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,7 +38,7 @@ public class IntakeFormRequest {
     @Schema(description = "섭취단백질", example = "60")
     private double intakeProtein;
 
-    @NotNull
+    @Nullable
     @Schema(description = "Base64 Encode Image")
     private String image;
 
