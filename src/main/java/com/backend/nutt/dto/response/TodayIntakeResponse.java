@@ -5,12 +5,17 @@ import com.backend.nutt.domain.Intake;
 import com.backend.nutt.domain.MealPlan;
 import com.backend.nutt.domain.type.IntakeTitle;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +26,10 @@ import java.util.List;
 /** 하루 전체에 대한 데이터 **/
 public class TodayIntakeResponse {
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Schema(description = "날짜", example = "2023-05-10")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Schema(description = "일일 목표 칼로리", example = "2100.10")
     private double dailyKcal;
@@ -63,8 +70,10 @@ public class TodayIntakeResponse {
         private String img;
 
         @JsonFormat(pattern = "hh:mm")
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         @Schema(description = "섭취 시간")
-        private LocalTime time;
+        private LocalDateTime time;
 
         @Schema(description = "식단별 섭취 칼로리", example = "500")
         private double intakeKcal;

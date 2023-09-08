@@ -9,8 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +31,10 @@ public class MealPlan extends BaseTimeEntity {
     private List<Intake> intakeList = new ArrayList<>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate intakeDate;
+    private LocalDateTime intakeDate;
 
     @DateTimeFormat(pattern = "hh:mm")
-    private LocalTime intakeTime;
+    private LocalDateTime intakeTime;
 
     @Enumerated(EnumType.STRING)
     private IntakeTitle intakeTitle;

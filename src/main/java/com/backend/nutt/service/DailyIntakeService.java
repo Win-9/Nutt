@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -59,8 +60,8 @@ public class DailyIntakeService {
                 .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
                 .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
                 .imageUrl(imageUrl)
-                .intakeDate(LocalDate.now())
-                .intakeTime(LocalTime.now())
+                .intakeDate(LocalDateTime.now())
+                .intakeTime(LocalDateTime.now())
                 .intakeList(new ArrayList<>())
                 .build();
         return mealPlan;

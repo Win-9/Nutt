@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -19,7 +20,7 @@ import java.util.*;
 public class YearMonthMealPlanResponse {
     @JsonFormat(pattern = "yyyy-MM")
     @Schema(description = "날짜{년도-월}", example = "2023-05")
-    private LocalDate date;
+    private LocalDateTime date;
     private List<MealData> mealData;
 
 
@@ -29,11 +30,11 @@ public class YearMonthMealPlanResponse {
     static class MealData {
         @Schema(description = "날짜{년도-월-일}", example = "2023-05-13")
         @JsonFormat(pattern = "yyyy-MM-dd")
-        private LocalDate date;
+        private LocalDateTime date;
 
         @Schema(description = "시간{시:분}", example = "11:18")
         @JsonFormat(pattern = "hh:mm")
-        private LocalTime time;
+        private LocalDateTime time;
 
         @Schema(description = "이미지 링크", example = "http../asd/sadf...")
         private String img;
