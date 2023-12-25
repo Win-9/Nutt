@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -77,7 +75,6 @@ public class MealPlanController {
     })
     @GetMapping("/search/date/{year}/{month}")
     @Operation(summary = "년도, 월 별 섭취기록", description = "년도와 달을 검색하여 섭취한 기록들을 확인합니다.")
-    @Cacheable(key = "#id", value = "mealPlan")
     public ResponseEntity getIntakeRecordMonth(@AuthenticationPrincipal Member member, @PathVariable int year, @PathVariable int month) {
         YearMonthMealPlanResponse response = mealPlanService.getMealPlanYearMonth(member, year, month);
         return ResponseEntity.ok().body(BaseResponse.success(response));
@@ -89,7 +86,6 @@ public class MealPlanController {
     })
     @GetMapping("/search/year/{intakeYear}")
     @Operation(summary = "년도별 섭취기록", description = "년도를 검색하여 섭취한 기록들을 확인합니다.")
-    @Cacheable(key = "#id", value = "mealPlan")
     public ResponseEntity getIntakeRecordYear(@AuthenticationPrincipal Member member, @PathVariable int intakeYear) {
         YearMonthMealPlanResponse response = mealPlanService.getMealPlanYear(member, intakeYear);
         return ResponseEntity.ok().body(BaseResponse.success(response));
@@ -101,9 +97,10 @@ public class MealPlanController {
     })
     @GetMapping("/search/today-intake")
     @Operation(summary = "오늘의 섭취기록", description = "오늘의 섭취기록에 대한 정보를 확인합니다.")
-    public ResponseEntity getTodayIntakeRecord(@AuthenticationPrincipal Member member) {
+    @Cacheable(key = "#member.email", value = "mealPlan")
+    public BaseResponse getTodayIntakeRecord(@AuthenticationPrincipal Member member) {
         TodayIntakeResponse response = mealPlanService.getTodayIntake(member);
-        return ResponseEntity.ok().body(BaseResponse.success(response));
+        return BaseResponse.success(response);
     }
 
     @DeleteMapping("/delete/date/{year}/{month}/{day}")
