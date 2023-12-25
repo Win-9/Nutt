@@ -61,7 +61,7 @@ public class DailyIntakeService {
                 .intakeTitle(IntakeTitle.valueOf(request.getIntakeTitle()))
                 .imageUrl(imageUrl)
                 .intakeDate(LocalDateTime.now())
-                .intakeTime(LocalDateTime.now())
+                .intakeTime(LocalTime.now())
                 .intakeList(new ArrayList<>())
                 .build();
         return mealPlan;

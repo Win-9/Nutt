@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class MealPlan extends BaseTimeEntity {
     private LocalDateTime intakeDate;
 
     @DateTimeFormat(pattern = "hh:mm")
-    private LocalDateTime intakeTime;
+    private LocalTime intakeTime;
 
     @Enumerated(EnumType.STRING)
     private IntakeTitle intakeTitle;

@@ -25,7 +25,7 @@ import java.util.List;
 @Getter
 /** 하루 전체에 대한 데이터 **/
 public class TodayIntakeResponse {
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Schema(description = "날짜", example = "2023-05-10")
@@ -73,7 +73,7 @@ public class TodayIntakeResponse {
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         @Schema(description = "섭취 시간")
-        private LocalDateTime time;
+        private LocalTime time;
 
         @Schema(description = "식단별 섭취 칼로리", example = "500")
         private double intakeKcal;

@@ -3,10 +3,12 @@ package com.backend.nutt.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import static com.backend.nutt.common.ResponseMessage.DATA_SUCCESSFULLY_PROCESSED;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class BaseResponse<T>{
     private ResponseMessage message;

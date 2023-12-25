@@ -34,7 +34,7 @@ public class YearMonthMealPlanResponse {
 
         @Schema(description = "시간{시:분}", example = "11:18")
         @JsonFormat(pattern = "hh:mm")
-        private LocalDateTime time;
+        private LocalTime time;
 
         @Schema(description = "이미지 링크", example = "http../asd/sadf...")
         private String img;
