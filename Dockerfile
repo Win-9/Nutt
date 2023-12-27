@@ -4,4 +4,5 @@ FROM openjdk:17-alpine
 COPY ./build/libs/Nutt-0.0.1-SNAPSHOT.jar Nutt.jar
 
 # 시스템 진입점 정의
-ENTRYPOINT ["java","-jar","/Nutt.jar"]
+ENV PROFILE="dev"
+ENTRYPOINT ["java","-jar","/Nutt.jar", "--spring.profile.active=$PROFILE"]
