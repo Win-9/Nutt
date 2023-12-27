@@ -42,7 +42,7 @@ public class MealPlanController {
     private final MealPlanService mealPlanService;
     private final S3Service s3Service;
 
-    @PostMapping(value = "/record-intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/post/intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "섭취기록", description = "일일 섭취량을 기록한다.")
     public ResponseEntity saveDailyIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest,
                                           BindingResult result) throws IOException {
@@ -56,7 +56,7 @@ public class MealPlanController {
         return ResponseEntity.ok().body(BaseResponse.success());
     }
 
-    @PostMapping(value = "/sample/record-intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/sample/post/intake", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "(샘플데이터기록용)섭취기록", description = "일일 섭취량을 기록한다.")
     public ResponseEntity saveTestDataIntake(@AuthenticationPrincipal Member member, @RequestBody @Valid IntakeFormRequest intakeFormRequest,
                                           BindingResult result) throws IOException {

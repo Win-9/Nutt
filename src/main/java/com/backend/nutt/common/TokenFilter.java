@@ -33,7 +33,7 @@ public class TokenFilter extends GenericFilterBean {
 
 
         try {
-            if (accessToken != null && tokenService.checkToken(accessToken)) {
+            if (accessToken != null && tokenService.checkToken(accessToken) && tokenService.findAccessToken(accessToken) == null) {
                 Authentication authentication = tokenService.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

@@ -32,7 +32,7 @@
 
 |Java|SpringBoot|SpringData JPA|Spring Security|MySQL|
 |-|-|-|-|-|
-|[![My Skills](https://skillicons.dev/icons?i=java)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=spring)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=mysql)](https://skillicons.dev)| |
+|[![My Skills](https://skillicons.dev/icons?i=java)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=spring)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=jpa)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=springsecurity)](https://skillicons.dev)|[![My Skills](https://skillicons.dev/icons?i=mysql)](https://skillicons.dev)|
 
 |Jenkins|JWT|AWS|NCloud|Swagger|
 |-|-|-|-|-|
@@ -50,7 +50,10 @@
 ## 개요
 
 
-https://github.com/Win-9/Nutt/assets/80390524/57a12c29-a8e8-409e-a17e-3be1b6152880
+
+
+https://github.com/Win-9/Nutt/assets/80390524/b585b44e-1e78-4ef8-881a-9560dd8c0e6d
+
 
 
 
