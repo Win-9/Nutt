@@ -1,0 +1,37 @@
+version: "3"
+services:
+  database:
+    container_name: mysql_db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: nutt
+      MYSQL_USER: win9
+      MYSQL_USER_PASSWORD: rkdtmdrn123
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: rkdtmdrn123
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+    networks:
+      - test_net
+
+  application:
+    container_name: Nutt
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/nutt
+      SPRING_DATASOURCE_USERNAME: win9
+      SPRING_DATASOURCE_PASSWORD: rkdtmdrn123
+    depends_on:
+      - database
+    networks:
+      - test_net
+
+networks:
+  test_net:
