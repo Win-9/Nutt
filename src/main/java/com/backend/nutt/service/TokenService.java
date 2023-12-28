@@ -36,9 +36,9 @@ public class TokenService {
     private String secretKey;
     private static Key key;
     @Value("${jwt.live.atk}")
-    private final long ACCESS_PERIOD;
+    private long ACCESS_PERIOD;
     @Value("${jwt.live.rtk}")
-    private final long REFRESH_PERIOD;
+    private long REFRESH_PERIOD;
     @PostConstruct
     private void setUPEncodeKey() {
         key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
