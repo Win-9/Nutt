@@ -37,6 +37,5 @@ out/
 .vscode/
 
 ### properties ###
-src/main/resources/application.properties
-src/main/resources/application-swagger.properties.properties
-src/main/resources/application-S3.properties
+src/main/resources/env/**
+
