@@ -1,0 +1,29 @@
+spring:
+  config:
+    import:
+      - "env/database.yml"
+      - "env/swagger.yml"
+      - "env/jwt.yml"
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+  data:
+    redis:
+      password: ${redis_password}
+      port: ${redis_port}
+      host: ${redis_host}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${mysql_username}
+    password: ${mysql_password}
+    url: ${mysql_endpoint}
+  profiles:
+    include: swagger, S3
+    active: local
+
+
+
+
