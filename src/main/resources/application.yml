@@ -4,6 +4,7 @@ spring:
       - "env/database.yml"
       - "env/swagger.yml"
       - "env/jwt.yml"
+      - "env/S3.yml"
   jpa:
     generate-ddl: true
     hibernate:
