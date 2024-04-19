@@ -16,7 +16,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,7 +33,7 @@ jobs:
           ./gradlew clean build -x test
 
       - name: executing remote ssh commands using password
-      - uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER_NAME }}
