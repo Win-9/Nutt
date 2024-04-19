@@ -44,6 +44,7 @@ jobs:
           password: ${{ secrets.PASS_WORD }}
           port: ${{ secrets.PORT }}
           timeout: 70s
+          proxy_timeout: 70s
           script: whoami
 
 
